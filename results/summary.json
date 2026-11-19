@@ -1,0 +1,52 @@
+{
+  "metadata": {
+    "model_id": "Qwen/Qwen2.5-0.5B-Instruct",
+    "revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+    "seeds": "42 (main), [42, 123, 999] (random control)"
+  },
+  "conditions": [
+    {
+      "name": "1. Unchanged Baseline",
+      "target_score": "NLL 2.6328 (PPL 13.91, Δ +0.000)",
+      "regression_score": "EN NLL 0.8507 (Δ +0.000) | Non-Neg 0.8383",
+      "cost": "130.93s CPU | 0 params (L2 0.0)",
+      "notes": "Reference model"
+    },
+    {
+      "name": "2. Static Weight Edit (WSP)",
+      "target_score": "NLL 2.6334 (PPL 13.92, Δ +0.001)",
+      "regression_score": "EN NLL 0.8513 (Δ +0.001) | Non-Neg 0.8425",
+      "cost": "83.78s CPU | 229,376 params (L2 1.2314)",
+      "notes": "Data-free lm_head->down_proj top-256 edit"
+    },
+    {
+      "name": "3. Awake DES Edit (Martín-Fernández)",
+      "target_score": "NLL 2.6353 (PPL 13.95, Δ +0.002)",
+      "regression_score": "EN NLL 0.8397 (Δ -0.011) | Non-Neg 0.842",
+      "cost": "821.08s CPU | 229,376 params (L2 0.4342)",
+      "notes": "DES top-4 layers [1, 22, 16, 19], alpha=0.05"
+    },
+    {
+      "name": "4. Random / Untargeted Edit (3 seeds)",
+      "target_score": "NLL 2.6365 ± 0.0013 (PPL 13.96, Δ +0.004)",
+      "regression_score": "EN NLL 0.8661 (Δ +0.015) | Non-Neg 0.8431",
+      "cost": "233.59s CPU | 229,376 params (L2 1.3096)",
+      "notes": "3-seed mean ± std"
+    },
+    {
+      "name": "5a. Prompting / Inference Control",
+      "target_score": "NLL 2.6345 (PPL 13.94, Δ +0.002)",
+      "regression_score": "EN NLL 0.8507 (Δ +0.000) | Non-Neg 0.8513",
+      "cost": "89.41s CPU | 0 params (L2 0.0)",
+      "notes": "Strict Swedish system prompt"
+    },
+    {
+      "name": "5b. Micro-LoRA (layers 18..23, r=4)",
+      "target_score": "NLL 2.7075 (PPL 14.99, Δ +0.075)",
+      "regression_score": "EN NLL 0.902 (Δ +0.051) | Non-Neg 0.8466",
+      "cost": "4115.96s CPU | 138,240 params (L2 0.9551)",
+      "notes": "18 steps on dev (loss 0.911->1.5384)"
+    }
+  ],
+  "examples": []
+}

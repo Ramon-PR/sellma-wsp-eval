@@ -1,0 +1,419 @@
+{
+  "run_name": "qwen_baseline",
+  "evaluator": "llm_judge_plus_auto_checks",
+  "evaluations": [
+    {
+      "prompt_id": "ev_dev_01",
+      "response_id": "resp_e3fb33a07b60",
+      "is_correct": false,
+      "swedish_quality": 0,
+      "task_correctness": 1,
+      "failure_modes": [
+        "lexical_hallucination",
+        "grammar",
+        "truncation"
+      ],
+      "notes": "Mentions valid examples (chatbots, Siri/Alexa), but severely corrupts Swedish vocabulary ('Artikli intelligens', 'AI-bottolen', 'dekord', 'antas frågor') and truncates mid-sentence.",
+      "reference_answer": "Artificiell intelligens (AI) är datorsystem som kan lösa uppgifter som normalt kräver mänsklig intelligens, till exempel att förstå språk eller känna igen mönster. Två vardagsexempel är röstassistenter i mobilen (som Siri eller Google Assistent) och rekommendationer för filmer och musik på strömningstjänster."
+    },
+    {
+      "prompt_id": "ev_dev_02",
+      "response_id": "resp_a4fddf0645d9",
+      "is_correct": false,
+      "swedish_quality": 0,
+      "task_correctness": 0,
+      "failure_modes": [
+        "code_switching",
+        "grammar",
+        "task_misunderstanding"
+      ],
+      "notes": "Fails to ask to reschedule the lunch meeting to tomorrow at 12:30, uses Danish 'Beklager!', broken agreement ('din lunchmötet'), and nonsensical sign-off ('Mitt ljud!').",
+      "reference_answer": "Hej!\n\nSkulle vi kunna flytta vårt lunchmöte till i morgon klockan 12:30 i stället? Hör gärna av dig om tiden passar dig.\n\nVänliga hälsningar,\n[Ditt namn]"
+    },
+    {
+      "prompt_id": "ev_dev_03",
+      "response_id": "resp_9a81e385f03f",
+      "is_correct": false,
+      "swedish_quality": 0,
+      "task_correctness": 0,
+      "failure_modes": [
+        "grammar",
+        "lexical_hallucination",
+        "repetition"
+      ],
+      "notes": "Corrupts the required phrases ('Et rött hus', 'En stort bord') and produces incoherent pseudo-Swedish ('kropplig rödhetsskärm', 'rötter högt bågot på dina dörren').",
+      "reference_answer": "1. Vi bor i ett rött hus nära skogen.\n2. I köket står ett stort bord med plats för åtta personer.\n3. Min syster köpte en ny bil i förra veckan."
+    },
+    {
+      "prompt_id": "ev_eval_01",
+      "response_id": "resp_5657a8abbbb7",
+      "is_correct": false,
+      "swedish_quality": 0,
+      "task_correctness": 0,
+      "failure_modes": [
+        "lexical_hallucination",
+        "hallucination",
+        "truncation"
+      ],
+      "notes": "Invents nonsensical concepts ('Kortkastning av el', 'Vatten om el', 'storeställen') instead of real electricity-saving tips and truncates at 128 tokens.",
+      "reference_answer": "1. Sänk inomhustemperaturen med en eller två grader och täta dragiga fönster och dörrar.\n2. Duscha kortare tid och använd snålspolande munstycke för att minska varmvattenförbrukningen.\n3. Kör disk- och tvättmaskin fulla på ekoprogram och stäng av apparater som står i standby-läge."
+    },
+    {
+      "prompt_id": "ev_eval_02",
+      "response_id": "resp_21e0705ee495",
+      "is_correct": false,
+      "swedish_quality": 0,
+      "task_correctness": 0,
+      "failure_modes": [
+        "lexical_hallucination",
+        "grammar",
+        "task_misunderstanding"
+      ],
+      "notes": "Says 'Det är min bärda och jag har feber' instead of reporting that the child has a fever and will stay home from preschool.",
+      "reference_answer": "Hej! [Barnets namn] har feber i dag och kommer därför att stanna hemma från förskolan. Vi hör av oss när hen mår bättre. Vänliga hälsningar, [Ditt namn]"
+    },
+    {
+      "prompt_id": "ev_eval_03",
+      "response_id": "resp_43de5a435550",
+      "is_correct": false,
+      "swedish_quality": 0,
+      "task_correctness": 0,
+      "failure_modes": [
+        "hallucination",
+        "code_switching",
+        "grammar",
+        "truncation"
+      ],
+      "notes": "Invents incorrect rules about 'en' vs 'ett', uses anglicism 'commona', and gives zero valid noun examples before truncating.",
+      "reference_answer": "I svenskan hör substantiv till två grammatiska genus: utrum ('en'-ord, vanligast) och neutrum ('ett'-ord). Det finns ingen helt fast regel, så man lär sig oftast artikeln tillsammans med ordet. Exempel: en bil, en bok och ett hus."
+    },
+    {
+      "prompt_id": "ev_eval_04",
+      "response_id": "resp_d565908906d5",
+      "is_correct": false,
+      "swedish_quality": 0,
+      "task_correctness": 0,
+      "failure_modes": [
+        "code_switching",
+        "repetition",
+        "lexical_hallucination"
+      ],
+      "notes": "Code-switches to English ('reasons'), invents 'matvallarna'/'tillgångslinare', and repeats the same empty sentence across all three bullet points.",
+      "reference_answer": "1. Matavfall kan omvandlas till biogas och biogödsel i stället för att brännas.\n2. Återvinning av förpackningar sparar råvaror och energi jämfört med nyproduktion.\n3. Källsortering minskar avfallsmängden och klimatpåverkan."
+    },
+    {
+      "prompt_id": "ev_eval_05",
+      "response_id": "resp_ec88738c3aa0",
+      "is_correct": false,
+      "swedish_quality": 0,
+      "task_correctness": 0,
+      "failure_modes": [
+        "hallucination",
+        "lexical_hallucination",
+        "code_switching",
+        "truncation"
+      ],
+      "notes": "Completely fails to describe cooking oat porridge; hallucinates reading history and checking a 'map/mapplats'.",
+      "reference_answer": "1. Mät upp 1 dl havregryn, 2 dl vatten och en nypa salt i en kastrull.\n2. Koka upp under omrörning på medelhög värme.\n3. Sänk värmen och låt gröten sjuda i cirka 3–5 minuter under omrörning tills den tjocknar.\n4. Servera varm med mjölk och bär, sylt eller äppelmos."
+    },
+    {
+      "prompt_id": "pub_dev_01",
+      "response_id": "resp_aba0e45167cb",
+      "is_correct": false,
+      "swedish_quality": 0,
+      "task_correctness": 0,
+      "failure_modes": [
+        "hallucination",
+        "grammar"
+      ],
+      "notes": "Hallucinates that 'Sveriges riksdagen' pays VAB and fails to explain care of a sick child or name Försäkringskassan.",
+      "reference_answer": "VAB (vård av barn) innebär att du stannar hemma från arbetet för att ta hand om ett sjukt barn och får tillfällig föräldrapenning. Det är Försäkringskassan som ansvarar för att betala ut ersättningen."
+    },
+    {
+      "prompt_id": "pub_dev_02",
+      "response_id": "resp_60c122bc0f03",
+      "is_correct": false,
+      "swedish_quality": 0,
+      "task_correctness": 0,
+      "failure_modes": [
+        "hallucination",
+        "lexical_hallucination",
+        "truncation"
+      ],
+      "notes": "Fails to explain annual income tax declaration; invents nonsensical definitions for kvarskatt and 'skatteåterbärga'.",
+      "reference_answer": "Att deklarera innebär att du varje vår kontrollerar och godkänner eller kompletterar uppgifterna om dina inkomster och avdrag hos Skatteverket. Kvarskatt betyder att du har betalat för lite skatt under året och måste betala in mellanskillnaden, medan skatteåterbäring betyder att du betalat för mycket och får pengar tillbaka."
+    },
+    {
+      "prompt_id": "pub_dev_03",
+      "response_id": "resp_949a0e44ae69",
+      "is_correct": true,
+      "swedish_quality": 1,
+      "task_correctness": 2,
+      "failure_modes": [
+        "prompt_echo",
+        "spelling"
+      ],
+      "notes": "Accurately extracts both facts from the provided Swedish passage (8th sick day; employer pays during the first 14 days), though it echoes the question first and introduces two spelling corruptions ('läkarsintyg', 'kärnensavdrag').",
+      "reference_answer": "Läkarintyg behövs vanligtvis från och med den åttonde sjukdagen, och det är arbetsgivaren som betalar sjuklön under de första 14 dagarna."
+    },
+    {
+      "prompt_id": "pub_eval_01",
+      "response_id": "resp_2067ce8baf45",
+      "is_correct": false,
+      "swedish_quality": 0,
+      "task_correctness": 0,
+      "failure_modes": [
+        "hallucination",
+        "grammar"
+      ],
+      "notes": "Hallucinates a nonexistent authority ('Sveriges försökningsrådet (SVF)') instead of Skatteverket, and shows broken Swedish grammar ('en personnummer', 'skolanväg').",
+      "reference_answer": "Ett personnummer är en unik identitetsbeteckning som tilldelas personer som är folkbokförda i Sverige. Det är Skatteverket som ansvarar för folkbokföringen."
+    },
+    {
+      "prompt_id": "pub_eval_02",
+      "response_id": "resp_7f23843ea8c6",
+      "is_correct": false,
+      "swedish_quality": 0,
+      "task_correctness": 0,
+      "failure_modes": [
+        "hallucination",
+        "lexical_hallucination",
+        "grammar"
+      ],
+      "notes": "Corrupts 'karensavdrag' to 'En kärnensavdrag' and hallucinates that it refers to starting a new job.",
+      "reference_answer": "Karensavdrag är ett avdrag som görs på sjuklönen när en anställd blir sjukskriven, motsvarande 20 procent av en genomsnittlig veckolön (ungefär en arbetsdag)."
+    },
+    {
+      "prompt_id": "pub_eval_03",
+      "response_id": "resp_da43458f02b6",
+      "is_correct": false,
+      "swedish_quality": 0,
+      "task_correctness": 0,
+      "failure_modes": [
+        "hallucination",
+        "grammar",
+        "truncation"
+      ],
+      "notes": "Incoherent explanation that confuses folkbokföring with postal address rules and uses malformed Swedish ('känslad', 'anmala en tillgång').",
+      "reference_answer": "Folkbokföringsadressen registreras hos Skatteverket där du bor permanent och styr bland annat var du betalar skatt och röstar. En tillfällig postadress (särskild postadress) används bara för att få post skickad till en annan adress under en period utan att ändra folkbokföringen."
+    },
+    {
+      "prompt_id": "pub_eval_04",
+      "response_id": "resp_6914a901b0f9",
+      "is_correct": true,
+      "swedish_quality": 1,
+      "task_correctness": 2,
+      "failure_modes": [
+        "grammar"
+      ],
+      "notes": "Accurately extracts both numbers from the passage (480 total days; 90 reserved days per parent) concisely in Swedish; minor agreement slip ('Reserverad' instead of 'Reserverade').",
+      "reference_answer": "Det finns totalt 480 dagar med föräldrapenning per barn, och 90 dagar är reserverade för vardera föräldern vid gemensam vårdnad."
+    },
+    {
+      "prompt_id": "pub_eval_05",
+      "response_id": "resp_7b18d84598cb",
+      "is_correct": true,
+      "swedish_quality": 2,
+      "task_correctness": 2,
+      "failure_modes": [],
+      "notes": "Accurately and cleanly answers both questions from the provided Swedish passage in natural Swedish.",
+      "reference_answer": "Bostadsförsäljningen ska redovisas i inkomstdeklarationen året efter försäljningen, och man kan i vissa fall ansöka om uppskov med skatten om man köper en ny ersättningsbostad."
+    },
+    {
+      "prompt_id": "reas_dev_01",
+      "response_id": "resp_67e78884acf8",
+      "is_correct": false,
+      "swedish_quality": 2,
+      "task_correctness": 0,
+      "failure_modes": [
+        "wrong_reasoning"
+      ],
+      "notes": "Follows HH:MM format cleanly, but computes 16:15 instead of 13:15 (09:40 + 3h 35m = 13:15).",
+      "reference_answer": "13:15"
+    },
+    {
+      "prompt_id": "reas_dev_02",
+      "response_id": "resp_a6a152decbc8",
+      "is_correct": true,
+      "swedish_quality": 2,
+      "task_correctness": 2,
+      "failure_modes": [],
+      "notes": "Correctly computes 800 * 0.75 = 600 kr in concise, natural Swedish.",
+      "reference_answer": "Jackan kostar 600 kronor efter rabatten."
+    },
+    {
+      "prompt_id": "reas_eval_01",
+      "response_id": "resp_a63f83f82739",
+      "is_correct": false,
+      "swedish_quality": 2,
+      "task_correctness": 0,
+      "failure_modes": [
+        "wrong_reasoning"
+      ],
+      "notes": "Grammatically valid Swedish sentence, but logically wrong: answers Erik instead of Oscar.",
+      "reference_answer": "Oscar är yngst eftersom Anna är äldre än Erik, Erik är äldre än Maja och Maja är äldre än Oscar."
+    },
+    {
+      "prompt_id": "reas_eval_02",
+      "response_id": "resp_2d0083bd8c49",
+      "is_correct": false,
+      "swedish_quality": 0,
+      "task_correctness": 0,
+      "failure_modes": [
+        "code_switching",
+        "truncation",
+        "wrong_reasoning"
+      ],
+      "notes": "Code-switches into English mid-solution, invents 'äpplin', and truncates at 128 tokens before computing the final cost of 7 apples (42 kr).",
+      "reference_answer": "Ett äpple kostar 18 / 3 = 6 kronor, så 7 äpplen kostar 7 × 6 = 42 kronor."
+    },
+    {
+      "prompt_id": "reas_eval_03",
+      "response_id": "resp_dd7311b058d4",
+      "is_correct": false,
+      "swedish_quality": 2,
+      "task_correctness": 0,
+      "failure_modes": [
+        "wrong_reasoning",
+        "missing_explanation"
+      ],
+      "notes": "Commits a classic syllogistic fallacy by answering 'Ja.' instead of 'Nej' and omits the requested short explanation.",
+      "reference_answer": "Nej. Att vissa blommor vissnar snabbt betyder inte att just alla rosor ingår bland de blommor som vissnar snabbt."
+    },
+    {
+      "prompt_id": "reas_eval_04",
+      "response_id": "resp_d6e0f411fdc3",
+      "is_correct": false,
+      "swedish_quality": 0,
+      "task_correctness": 0,
+      "failure_modes": [
+        "wrong_reasoning",
+        "grammar",
+        "truncation"
+      ],
+      "notes": "Inverts the division (15/120 = 0.125 days instead of 120/15 = 8 days), writes broken Swedish ('det correcta fråga', 'rätt antal antingen'), and truncates.",
+      "reference_answer": "Det tar 120 / 15 = 8 dagar för Sara att läsa ut hela boken."
+    },
+    {
+      "prompt_id": "code_dev_01",
+      "response_id": "resp_2c56ca778e5b",
+      "is_correct": false,
+      "swedish_quality": 1,
+      "task_correctness": 1,
+      "failure_modes": [
+        "truncation",
+        "instruction_following",
+        "grammar"
+      ],
+      "notes": "The `sum_even` function body itself is correct, but unsolicited test code and verbose Swedish comments hit the 128-token limit and truncate mid-list, failing automated execution with SyntaxError.",
+      "reference_answer": "```python\ndef sum_even(nums):\n    return sum(x for x in nums if x % 2 == 0)\n```"
+    },
+    {
+      "prompt_id": "code_dev_02",
+      "response_id": "resp_032edb1a5e2b",
+      "is_correct": true,
+      "swedish_quality": 2,
+      "task_correctness": 2,
+      "failure_modes": [],
+      "notes": "Clean, accurate Python implementation passing all automated unit tests.",
+      "reference_answer": "```python\ndef celsius_to_fahrenheit(c):\n    return c * 9 / 5 + 32\n```"
+    },
+    {
+      "prompt_id": "code_eval_01",
+      "response_id": "resp_e888262241f6",
+      "is_correct": false,
+      "swedish_quality": 1,
+      "task_correctness": 0,
+      "failure_modes": [
+        "code_bug",
+        "code_switching",
+        "truncation"
+      ],
+      "notes": "Reverts to English vowels `['a', 'e', 'i', 'o', 'u']`, ignoring `y, å, ä, ö` explicitly listed in the Swedish prompt; adds English test string and truncates -> SyntaxError.",
+      "reference_answer": "```python\ndef count_swedish_vowels(text):\n    vowels = set('aeiouyåäöAEIOUYÅÄÖ')\n    return sum(1 for ch in text if ch in vowels)\n```"
+    },
+    {
+      "prompt_id": "code_eval_02",
+      "response_id": "resp_120cf657de55",
+      "is_correct": false,
+      "swedish_quality": 1,
+      "task_correctness": 0,
+      "failure_modes": [
+        "code_bug",
+        "truncation",
+        "grammar"
+      ],
+      "notes": "Fails to strip spaces or normalize letter case as required by the Swedish prompt, and truncates before closing the code fence -> SyntaxError.",
+      "reference_answer": "```python\ndef is_palindrome(s):\n    cleaned = ''.join(ch.lower() for ch in s if not ch.isspace())\n    return cleaned == cleaned[::-1]\n```"
+    },
+    {
+      "prompt_id": "code_eval_03",
+      "response_id": "resp_0b4ea065e39f",
+      "is_correct": false,
+      "swedish_quality": 1,
+      "task_correctness": 1,
+      "failure_modes": [
+        "truncation",
+        "instruction_following"
+      ],
+      "notes": "The `fizzbuzz_list` function body is algorithmically correct, but unsolicited print-test code with an incorrect inline comment hits the 128-token limit and fails automated execution with SyntaxError.",
+      "reference_answer": "```python\ndef fizzbuzz_list(n):\n    out = []\n    for i in range(1, n + 1):\n        if i % 15 == 0:\n            out.append('FizzBuzz')\n        elif i % 3 == 0:\n            out.append('Fizz')\n        elif i % 5 == 0:\n            out.append('Buzz')\n        else:\n            out.append(str(i))\n    return out\n```"
+    },
+    {
+      "prompt_id": "code_eval_04",
+      "response_id": "resp_11ffdbce7883",
+      "is_correct": false,
+      "swedish_quality": 0,
+      "task_correctness": 0,
+      "failure_modes": [
+        "code_switching",
+        "truncation",
+        "code_bug"
+      ],
+      "notes": "Code-switches to a verbose English docstring containing an erroneous doctest (`[10, 20, 4, 5] -> 20`), imports numpy unnecessarily, and truncates at 128 tokens before implementing the function body.",
+      "reference_answer": "```python\ndef second_largest(nums):\n    unique = sorted(set(nums), reverse=True)\n    return unique[1] if len(unique) >= 2 else None\n```"
+    },
+    {
+      "prompt_id": "ctrl_dev_01",
+      "response_id": "resp_26f5b2094e36",
+      "is_correct": true,
+      "swedish_quality": 2,
+      "task_correctness": 2,
+      "failure_modes": [],
+      "notes": "Fluent English control response accurately identifying the Moon's gravitational pull as the main cause of ocean tides (minor side detail conflates new-moon spring tides with lunar proximity).",
+      "reference_answer": "Ocean tides are primarily caused by the gravitational pull of the Moon (with a smaller contribution from the Sun) on Earth's oceans, creating tidal bulges as the Earth rotates."
+    },
+    {
+      "prompt_id": "ctrl_dev_02",
+      "response_id": "resp_63997b0418ed",
+      "is_correct": true,
+      "swedish_quality": 2,
+      "task_correctness": 2,
+      "failure_modes": [],
+      "notes": "Fluent English control coding response passing all automated unit tests concisely.",
+      "reference_answer": "```python\ndef reverse_words(sentence):\n    return ' '.join(reversed(sentence.split()))\n```"
+    },
+    {
+      "prompt_id": "ctrl_eval_01",
+      "response_id": "resp_f51e8e466a75",
+      "is_correct": false,
+      "swedish_quality": 2,
+      "task_correctness": 0,
+      "failure_modes": [
+        "wrong_reasoning"
+      ],
+      "notes": "Follows English formatting instruction cleanly, but miscalculates 90 * 2.5 = 225 km as 150 km.",
+      "reference_answer": "225 km"
+    },
+    {
+      "prompt_id": "ctrl_eval_02",
+      "response_id": "resp_e5ae7b8cd772",
+      "is_correct": true,
+      "swedish_quality": 2,
+      "task_correctness": 2,
+      "failure_modes": [],
+      "notes": "Accurate, concise, fluent English reading comprehension extracting both 349 members and 4-year elections.",
+      "reference_answer": "There are 349 members in the Swedish Riksdag, and elections are held every four years."
+    }
+  ]
+}

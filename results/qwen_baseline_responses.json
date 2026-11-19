@@ -1,0 +1,631 @@
+{
+  "metadata": {
+    "run_name": "qwen_baseline",
+    "model_id": "Qwen/Qwen2.5-0.5B-Instruct",
+    "model_revision": "unknown",
+    "split_filter": "all",
+    "dtype": "bfloat16",
+    "max_new_tokens": 128,
+    "torch_threads": 8,
+    "seed": 42,
+    "timestamp_unix": 1795106596.48,
+    "num_prompts": 32,
+    "load_time_s": 4.62,
+    "total_gen_time_s": 306.48,
+    "avg_tokens_per_sec": 9.2,
+    "baseline_rss_mb": 617.8,
+    "peak_rss_mb": 1855.0,
+    "delta_rss_mb": 1237.2,
+    "peak_sys_ram_pct": 60.0
+  },
+  "responses": [
+    {
+      "prompt_id": "ev_dev_01",
+      "response_id": "resp_e3fb33a07b60",
+      "split": "dev",
+      "category": "everyday_sv",
+      "priority": "target",
+      "prompt": "Förklara kortfattat vad artificiell intelligens är och ge två konkreta exempel från vardagen.",
+      "response_text": "Artikli intelligens är ett tekniskt utvecklat system som kan bekräfta och förstå frågor och frågande. Det finns två exempel av artikli intelligens:\n\n1. AI-Chatbots: AI-bots som används i olika länder och organisationer har dekord att skapa chatbots som kan antas frågor och frågan. Chatbots kan också ta emot frågor och antalet information om dem.\n\n2. Siri och Alexa: De är några av de mest populära AI-bottolen som används",
+      "input_tokens": 69,
+      "generated_tokens": 128,
+      "gen_time_s": 15.36,
+      "tokens_per_sec": 8.34,
+      "auto_checks": {
+        "contains_cjk": false,
+        "expected_answer_match": null,
+        "code_exec_pass": null,
+        "code_exec_error": null
+      }
+    },
+    {
+      "prompt_id": "ev_dev_02",
+      "response_id": "resp_a4fddf0645d9",
+      "split": "dev",
+      "category": "everyday_sv",
+      "priority": "target",
+      "prompt": "Skriv ett kort och artigt mejl på svenska till en kollega för att flytta ett lunchmöte till i morgon klockan 12:30.",
+      "response_text": "Här är ett kort och artigt e-post:\n\nBeklager!\n\nDet är mina vänliga frågor om din lunchmötet. Hur kan jag hjälpa dig med det?\n\nVi har några tidigare planer som vi kan uppdatera när du kommer.\n\nVänligst!\n\nMitt ljud!",
+      "input_tokens": 82,
+      "generated_tokens": 74,
+      "gen_time_s": 8.3,
+      "tokens_per_sec": 8.92,
+      "auto_checks": {
+        "contains_cjk": false,
+        "expected_answer_match": null,
+        "code_exec_pass": null,
+        "code_exec_error": null
+      }
+    },
+    {
+      "prompt_id": "ev_dev_03",
+      "response_id": "resp_9a81e385f03f",
+      "split": "dev",
+      "category": "everyday_sv",
+      "priority": "target",
+      "prompt": "Skriv tre korta meningar på svenska där du använder uttrycken 'ett rött hus', 'ett stort bord' och 'en ny bil'.",
+      "response_text": "1. Et rött hus var ett kropplig rödhetsskärm i den vänliga dina dörren.\n2. En stort bord var ett kroppligt, stor, rötter högt bågot på dina dörren.\n3. En ny bil var ett kroppligt, stor, rötter högt bågot på dina dörren, som skulle vara en viktiga komforts- eller transportslösning.",
+      "input_tokens": 76,
+      "generated_tokens": 105,
+      "gen_time_s": 10.65,
+      "tokens_per_sec": 9.85,
+      "auto_checks": {
+        "contains_cjk": false,
+        "expected_answer_match": null,
+        "code_exec_pass": null,
+        "code_exec_error": null
+      }
+    },
+    {
+      "prompt_id": "ev_eval_01",
+      "response_id": "resp_5657a8abbbb7",
+      "split": "eval",
+      "category": "everyday_sv",
+      "priority": "target",
+      "prompt": "Ge tre praktiska tips för att spara el hemma under vintern i Sverige.",
+      "response_text": "1. **Kortkastning av el**: Om du har en kastan, kan du körna en kortkastning av el. Du kan följa dessa steg:\n\n   - Kostnaden för en kortkastning av el är mindre än 20 kronor.\n   - Du kan köpa kortkastan på en lokal storeställen eller online.\n   - Kortkastan kan vara ett utmanligt kostnadsbaserad produkt.\n\n2. **Vatten om el**: Om du har el och vill vatten den, kan du göra",
+      "input_tokens": 60,
+      "generated_tokens": 128,
+      "gen_time_s": 11.41,
+      "tokens_per_sec": 11.22,
+      "auto_checks": {
+        "contains_cjk": false,
+        "expected_answer_match": null,
+        "code_exec_pass": null,
+        "code_exec_error": null
+      }
+    },
+    {
+      "prompt_id": "ev_eval_02",
+      "response_id": "resp_21e0705ee495",
+      "split": "eval",
+      "category": "everyday_sv",
+      "priority": "target",
+      "prompt": "Skriv ett kort meddelande till förskolan för att berätta att ditt barn har feber i dag och därför stannar hemma.",
+      "response_text": "\"Det är min bärda och jag har feber i dag. Hur du kan ha en tid att bli allt mer bra! \"",
+      "input_tokens": 78,
+      "generated_tokens": 30,
+      "gen_time_s": 4.14,
+      "tokens_per_sec": 7.25,
+      "auto_checks": {
+        "contains_cjk": false,
+        "expected_answer_match": null,
+        "code_exec_pass": null,
+        "code_exec_error": null
+      }
+    },
+    {
+      "prompt_id": "ev_eval_03",
+      "response_id": "resp_43de5a435550",
+      "split": "eval",
+      "category": "everyday_sv",
+      "priority": "target",
+      "prompt": "Förklara kort på svenska hur man väljer mellan artiklarna 'en' och 'ett' och ge tre exempel med substantiv.",
+      "response_text": "I svenska kan du välja mellan artiklar 'en' och 'ett' med följande känslor:\n\n1. Artikeln 'ett': Detta är ett av de mest commona artikler i svenska. Om du vill säga att det är ett bättre eller mer specifikt tittligt än en annan artikel, kan du använda detta.\n\n2. Artikeln 'en': Detta är en specifikartikel som har en specifika namn eller typ. Om du vill säga att det är en specifikt artikel,",
+      "input_tokens": 74,
+      "generated_tokens": 128,
+      "gen_time_s": 13.08,
+      "tokens_per_sec": 9.78,
+      "auto_checks": {
+        "contains_cjk": false,
+        "expected_answer_match": null,
+        "code_exec_pass": null,
+        "code_exec_error": null
+      }
+    },
+    {
+      "prompt_id": "ev_eval_04",
+      "response_id": "resp_d565908906d5",
+      "split": "eval",
+      "category": "everyday_sv",
+      "priority": "target",
+      "prompt": "Varför är källsortering av matavfall och förpackningar viktig? Svara med tre korta punkter på svenska.",
+      "response_text": "Källsortering av matavfall och förpackningar är viktigt för många reasons:\n\n1. För att säkerställa att matvallarna har sammanhanget.\n2. För att säkerställa att matvallarna har sammanhang i ett samarbete.\n3. För att säkerställa att matvallarna har sammanhang i ett samarbete med andra materialer.\n\nDetta gör att matvallarna kan fungera mer korrekt och tillgångslinare.",
+      "input_tokens": 70,
+      "generated_tokens": 119,
+      "gen_time_s": 10.43,
+      "tokens_per_sec": 11.41,
+      "auto_checks": {
+        "contains_cjk": false,
+        "expected_answer_match": null,
+        "code_exec_pass": null,
+        "code_exec_error": null
+      }
+    },
+    {
+      "prompt_id": "ev_eval_05",
+      "response_id": "resp_ec88738c3aa0",
+      "split": "eval",
+      "category": "everyday_sv",
+      "priority": "target",
+      "prompt": "Beskriv i fyra enkla steg hur man kokar vanlig havregrynsgröt på spisen.",
+      "response_text": "I det första steg kan du starta med att läsa till det rörelse- och kulturhistorik om havregrynsgröt. Detta kan hjälpa dig att merklara vad det är och vad det betyder.\n\nNär du har lärt sig om den, kan du börja att ladda in de vatten och grönhet som finns i spisens varandra. Du kan också se på en map eller ett mapplats där det finns några vattenställer.\n\nVad du ska göra vid detta är att öka den vatten",
+      "input_tokens": 68,
+      "generated_tokens": 128,
+      "gen_time_s": 12.01,
+      "tokens_per_sec": 10.66,
+      "auto_checks": {
+        "contains_cjk": false,
+        "expected_answer_match": null,
+        "code_exec_pass": null,
+        "code_exec_error": null
+      }
+    },
+    {
+      "prompt_id": "pub_dev_01",
+      "response_id": "resp_aba0e45167cb",
+      "split": "dev",
+      "category": "public_services_sv",
+      "priority": "target",
+      "prompt": "Vad innebär VAB (vård av barn) i Sverige och vilken myndighet ansvarar för att betala ut ersättningen?",
+      "response_text": "VAD AV BARN (VAB) i Sverige betalar för att ersätta vår värd. Myndigheten som betalare av VAB är Sveriges riksdagen. Detta betalera den viktigaste översiktliga företag och organisationer i Sverige. VAB betalar för att ersätta världens världskap och säkerhetskraft.",
+      "input_tokens": 76,
+      "generated_tokens": 94,
+      "gen_time_s": 10.12,
+      "tokens_per_sec": 9.29,
+      "auto_checks": {
+        "contains_cjk": false,
+        "expected_answer_match": null,
+        "code_exec_pass": null,
+        "code_exec_error": null
+      }
+    },
+    {
+      "prompt_id": "pub_dev_02",
+      "response_id": "resp_60c122bc0f03",
+      "split": "dev",
+      "category": "public_services_sv",
+      "priority": "target",
+      "prompt": "Vad innebär det att deklarera sin inkomst hos Skatteverket varje år, och vad är skillnaden mellan kvarskatt och skatteåterbäring?",
+      "response_text": "Detta betyder att du ska vara enligt skapande av Skatteverket i dag. Detta betyder att du ska ha inomkräftet tillgång till kvarskatt och skatteåterbärga. Kvarskatt är ett öppen bättre för att använda än skatteåterbärga. \n\nSkatteåterbärga är en form av skatte som kan vara bra om du har en lång tid med en rikdom eller en stora företag. Detta betyder att du får",
+      "input_tokens": 86,
+      "generated_tokens": 128,
+      "gen_time_s": 12.05,
+      "tokens_per_sec": 10.63,
+      "auto_checks": {
+        "contains_cjk": false,
+        "expected_answer_match": null,
+        "code_exec_pass": null,
+        "code_exec_error": null
+      }
+    },
+    {
+      "prompt_id": "pub_dev_03",
+      "response_id": "resp_949a0e44ae69",
+      "split": "dev",
+      "category": "public_services_sv",
+      "priority": "target",
+      "prompt": "Läs texten nedan och svara på frågan på svenska.\nText: 'Om du är sjuk i mer än sju dagar i följd behöver du vanligtvis lämna ett läkarintyg till din arbetsgivare från och med den åttonde sjukdagen. De första 14 dagarna betalar arbetsgivaren sjuklön, med ett karensavdrag.'\nFråga: Från vilken sjukdag behövs vanligtvis läkarintyg, och vem betalar ersättningen under de första 14 dagarna?",
+      "response_text": "Från vilka sjukdag behövs vanligtvis läkarsintyg, och vem betalar ersättning under de första 14 dagarna? Det var om du är sjuk i mer än sju dagar i följd behöver du vanligtvis lämna ett läkarsintyg till din arbetsgivare från och med den åttonde sjukdagen. De första 14 dagarna betalar arbetsgivaren sjuklön, med ett kärnensavdrag.",
+      "input_tokens": 178,
+      "generated_tokens": 120,
+      "gen_time_s": 15.48,
+      "tokens_per_sec": 7.75,
+      "auto_checks": {
+        "contains_cjk": false,
+        "expected_answer_match": null,
+        "code_exec_pass": null,
+        "code_exec_error": null
+      }
+    },
+    {
+      "prompt_id": "pub_eval_01",
+      "response_id": "resp_2067ce8baf45",
+      "split": "eval",
+      "category": "public_services_sv",
+      "priority": "target",
+      "prompt": "Vad är ett personnummer i Sverige och vilken myndighet ansvarar för folkbokföringen?",
+      "response_text": "I Sverige är det enligt skolanväg om att ha en personnummer. Personnummeret är en identitetsskick som används för att identifiera personen. Myndigheten som ansvarar för folkbokföringen är den Sveriges försökningsrådet (SVF). SVF har tillräckliga uppmärksamhet av personnummerens innehåll och använder dem för att kontrollera och anpassa företagets försök.",
+      "input_tokens": 66,
+      "generated_tokens": 110,
+      "gen_time_s": 9.9,
+      "tokens_per_sec": 11.11,
+      "auto_checks": {
+        "contains_cjk": false,
+        "expected_answer_match": null,
+        "code_exec_pass": null,
+        "code_exec_error": null
+      }
+    },
+    {
+      "prompt_id": "pub_eval_02",
+      "response_id": "resp_7f23843ea8c6",
+      "split": "eval",
+      "category": "public_services_sv",
+      "priority": "target",
+      "prompt": "Förklara kort vad ett karensavdrag betyder när en anställd blir sjukskriven i Sverige.",
+      "response_text": "En kärnensavdrag betyder att en person får en ny jobb eller en annan uppgift. Detta kan vara en viktig första steg i en jobbplan. I Sverige har du en rättsliga uppmenningslag för att få en ny jobb. Detta innebär att du måste ha minskad 12-18 år av denna jobb. Detta kan vara en viktigt faktor i jobbplanen.",
+      "input_tokens": 72,
+      "generated_tokens": 109,
+      "gen_time_s": 10.07,
+      "tokens_per_sec": 10.83,
+      "auto_checks": {
+        "contains_cjk": false,
+        "expected_answer_match": null,
+        "code_exec_pass": null,
+        "code_exec_error": null
+      }
+    },
+    {
+      "prompt_id": "pub_eval_03",
+      "response_id": "resp_da43458f02b6",
+      "split": "eval",
+      "category": "public_services_sv",
+      "priority": "target",
+      "prompt": "Vad är skillnaden mellan att vara folkbokförd på en adress och att anmäla en tillfällig postadress i Sverige?",
+      "response_text": "Det finns ett viktigt känslad när du vill anmala en tillgång till en postadress i Sverige:\n\n1. Om du har en adress på en bokförd adress:\n   - Du kan inte anmala en tillgång till en postadress.\n   - De bokförd adresser inte har en postadress.\n\n2. Om du har en adress på en normal adress:\n   - Du kan anmala en tillgång till en postadress.\n   - Postadressen kan vara en bokförd adress eller en normal adress.\n\n3",
+      "input_tokens": 75,
+      "generated_tokens": 128,
+      "gen_time_s": 12.87,
+      "tokens_per_sec": 9.94,
+      "auto_checks": {
+        "contains_cjk": false,
+        "expected_answer_match": null,
+        "code_exec_pass": null,
+        "code_exec_error": null
+      }
+    },
+    {
+      "prompt_id": "pub_eval_04",
+      "response_id": "resp_6914a901b0f9",
+      "split": "eval",
+      "category": "public_services_sv",
+      "priority": "target",
+      "prompt": "Läs texten nedan och svara på frågan på svenska.\nText: 'Föräldrapenning kan tas ut fram till dess att barnet fyller 12 år eller slutar årskurs 5. Totalt finns 480 dagar med föräldrapenning per barn, varav 90 dagar är reserverade för vardera föräldern vid gemensam vårdnad.'\nFråga: Hur många dagar med föräldrapenning finns det totalt per barn, och hur många är reserverade för vardera föräldern vid gemensam vårdnad?",
+      "response_text": "Totala dagar med föräldrapenning per barn är 480 dagar.\n\nReserverad för vardera föräldern vid gemensam vårdnad är 90 dagar.",
+      "input_tokens": 183,
+      "generated_tokens": 46,
+      "gen_time_s": 7.89,
+      "tokens_per_sec": 5.83,
+      "auto_checks": {
+        "contains_cjk": false,
+        "expected_answer_match": null,
+        "code_exec_pass": null,
+        "code_exec_error": null
+      }
+    },
+    {
+      "prompt_id": "pub_eval_05",
+      "response_id": "resp_7b18d84598cb",
+      "split": "eval",
+      "category": "public_services_sv",
+      "priority": "target",
+      "prompt": "Läs texten nedan och svara på frågan på svenska.\nText: 'Om du säljer en bostad med vinst ska du redovisa försäljningen i din inkomstdeklaration året efter. Du kan i vissa fall ansöka om uppskov med skatten om du köper en ny ersättningsbostad.'\nFråga: När ska bostadsförsäljningen redovisas i deklarationen, och vad kan man ansöka om när man köper en ny ersättningsbostad?",
+      "response_text": "När du säljer en bostad med vinst ska du redovisa försäljningen i din inkomstdeklaration året efter. Man kan i vissa fall ansöka om uppskov med skatten om du köper en ny ersättningsbostad.",
+      "input_tokens": 173,
+      "generated_tokens": 67,
+      "gen_time_s": 10.17,
+      "tokens_per_sec": 6.58,
+      "auto_checks": {
+        "contains_cjk": false,
+        "expected_answer_match": null,
+        "code_exec_pass": null,
+        "code_exec_error": null
+      }
+    },
+    {
+      "prompt_id": "reas_dev_01",
+      "response_id": "resp_67e78884acf8",
+      "split": "dev",
+      "category": "reasoning_sv",
+      "priority": "non_negotiable",
+      "prompt": "Ett tåg avgår från Stockholm klockan 09:40 och resan till Göteborg tar 3 timmar och 35 minuter. Vilken tid kommer tåget fram? Svara med klockslaget i formatet HH:MM.",
+      "response_text": "16:15",
+      "input_tokens": 100,
+      "generated_tokens": 6,
+      "gen_time_s": 2.97,
+      "tokens_per_sec": 2.02,
+      "auto_checks": {
+        "contains_cjk": false,
+        "expected_answer_match": false,
+        "code_exec_pass": null,
+        "code_exec_error": null
+      }
+    },
+    {
+      "prompt_id": "reas_dev_02",
+      "response_id": "resp_a6a152decbc8",
+      "split": "dev",
+      "category": "reasoning_sv",
+      "priority": "non_negotiable",
+      "prompt": "En jacka kostar 800 kronor och är nedsatt med 25 procent. Hur mycket kostar jackan efter rabatten? Svara på svenska med beloppet i kronor.",
+      "response_text": "Jackan kostar 600 kronor efter rabatten.",
+      "input_tokens": 86,
+      "generated_tokens": 15,
+      "gen_time_s": 3.37,
+      "tokens_per_sec": 4.45,
+      "auto_checks": {
+        "contains_cjk": false,
+        "expected_answer_match": true,
+        "code_exec_pass": null,
+        "code_exec_error": null
+      }
+    },
+    {
+      "prompt_id": "reas_eval_01",
+      "response_id": "resp_a63f83f82739",
+      "split": "eval",
+      "category": "reasoning_sv",
+      "priority": "non_negotiable",
+      "prompt": "Anna är äldre än Erik. Erik är äldre än Maja. Maja är äldre än Oscar. Vem är yngst? Svara med namnet och en kort mening på svenska.",
+      "response_text": "Erik är yngst.",
+      "input_tokens": 83,
+      "generated_tokens": 8,
+      "gen_time_s": 2.78,
+      "tokens_per_sec": 2.88,
+      "auto_checks": {
+        "contains_cjk": false,
+        "expected_answer_match": false,
+        "code_exec_pass": null,
+        "code_exec_error": null
+      }
+    },
+    {
+      "prompt_id": "reas_eval_02",
+      "response_id": "resp_2d0083bd8c49",
+      "split": "eval",
+      "category": "reasoning_sv",
+      "priority": "non_negotiable",
+      "prompt": "En butik säljer 3 äpplen för 18 kronor. Hur mycket kostar 7 äpplen till samma pris per styck?",
+      "response_text": "Om du ska köpa 7 äpplen med samma pris som 18 kronor, kan du göra det genom att skapa en kvantitativ procentering.\n\nFirst, we need to find the price of one äpplin. Since 3 äpplen kostar 18 kronor, we can calculate the price of one äpplin:\n\n\\[ \\text{Price of one äpplin} = \\frac{\\text{Total cost for 3 äpplen}}{3} = \\frac{18}{3} = 6 \\text{ kr} \\",
+      "input_tokens": 76,
+      "generated_tokens": 128,
+      "gen_time_s": 12.0,
+      "tokens_per_sec": 10.66,
+      "auto_checks": {
+        "contains_cjk": false,
+        "expected_answer_match": false,
+        "code_exec_pass": null,
+        "code_exec_error": null
+      }
+    },
+    {
+      "prompt_id": "reas_eval_03",
+      "response_id": "resp_dd7311b058d4",
+      "split": "eval",
+      "category": "reasoning_sv",
+      "priority": "non_negotiable",
+      "prompt": "Om alla rosor är blommor och vissa blommor vissnar snabbt, kan vi då säkert veta att alla rosor vissnar snabbt? Svara med 'Ja' eller 'Nej' och förklara kort på svenska.",
+      "response_text": "Ja.",
+      "input_tokens": 100,
+      "generated_tokens": 3,
+      "gen_time_s": 2.6,
+      "tokens_per_sec": 1.15,
+      "auto_checks": {
+        "contains_cjk": false,
+        "expected_answer_match": false,
+        "code_exec_pass": null,
+        "code_exec_error": null
+      }
+    },
+    {
+      "prompt_id": "reas_eval_04",
+      "response_id": "resp_d6e0f411fdc3",
+      "split": "eval",
+      "category": "reasoning_sv",
+      "priority": "non_negotiable",
+      "prompt": "Sara läser 15 sidor om dagen i en bok med 120 sidor. Hur många dagar tar det för henne att läsa ut hela boken?",
+      "response_text": "Här är de rätt ansvarliga frågor:\n\n1. Här är det correcta fråga:\n   \"Hur många dagar har Sara att läsa ut hela boken?\"\n\n2. Rätt antal antingen:\n   - 15 sidor / 120 sidor = 0,125 dag\n\n3. Detta betyder att Sara har 0,125 dag att läsa ut hela boken.\n\n4. Om du vill skriva detta inom ett talbaserat format, kan du skrivit:\n   \"H",
+      "input_tokens": 82,
+      "generated_tokens": 128,
+      "gen_time_s": 13.3,
+      "tokens_per_sec": 9.63,
+      "auto_checks": {
+        "contains_cjk": false,
+        "expected_answer_match": false,
+        "code_exec_pass": null,
+        "code_exec_error": null
+      }
+    },
+    {
+      "prompt_id": "code_dev_01",
+      "response_id": "resp_2c56ca778e5b",
+      "split": "dev",
+      "category": "coding_sv",
+      "priority": "non_negotiable",
+      "prompt": "Skriv en Python-funktion med exakt signaturen `def sum_even(nums):` som returnerar summan av alla jämna heltal i listan `nums`. Ge bara Python-kod i ett kodblock.",
+      "response_text": "```python\ndef sum_even(nums):\n    # Skapar en variabel för att skapa en lista från inputet\n    numbers = [num for num in nums if isinstance(num, int) and num % 2 == 0]\n    \n    # Om lista är null eller empty, returnerar 0\n    if not numbers:\n        return 0\n    \n    # Summarer alla elementerna i lista\n    total_sum = sum(numbers)\n    \n    return total_sum\n\n# Testa funktionen med testlistan\ntest_list = [1, 2, 3, 4, 5,",
+      "input_tokens": 90,
+      "generated_tokens": 128,
+      "gen_time_s": 12.56,
+      "tokens_per_sec": 10.19,
+      "auto_checks": {
+        "contains_cjk": false,
+        "expected_answer_match": null,
+        "code_exec_pass": false,
+        "code_exec_error": "SyntaxError: invalid syntax"
+      }
+    },
+    {
+      "prompt_id": "code_dev_02",
+      "response_id": "resp_032edb1a5e2b",
+      "split": "dev",
+      "category": "coding_sv",
+      "priority": "non_negotiable",
+      "prompt": "Skriv en Python-funktion med exakt signaturen `def celsius_to_fahrenheit(c):` som omvandlar grader Celsius till Fahrenheit. Ge bara Python-kod i ett kodblock.",
+      "response_text": "```python\ndef celsius_to_fahrenheit(c):\n    return (c * 9/5) + 32\n\n# Exempel användning:\nprint(celsius_to_fahrenheit(0)) # 32\nprint(celsius_to_fahrenheit(100)) # 212\n```",
+      "input_tokens": 85,
+      "generated_tokens": 66,
+      "gen_time_s": 9.46,
+      "tokens_per_sec": 6.97,
+      "auto_checks": {
+        "contains_cjk": false,
+        "expected_answer_match": null,
+        "code_exec_pass": true,
+        "code_exec_error": null
+      }
+    },
+    {
+      "prompt_id": "code_eval_01",
+      "response_id": "resp_e888262241f6",
+      "split": "eval",
+      "category": "coding_sv",
+      "priority": "non_negotiable",
+      "prompt": "Skriv en Python-funktion med exakt signaturen `def count_swedish_vowels(text):` som räknar antalet svenska vokaler (`a, e, i, o, u, y, å, ä, ö`, både stora och små bokstäver) i strängen `text`. Ge bara Python-kod i ett kodblock.",
+      "response_text": "```python\ndef count_swedish_vowels(text):\n    # Skapar en variabel för att hålla antalet svenska vokalerna\n    swedish_vowels = 0\n    \n    # Itererade igenom varje ord i textet\n    for char in text:\n        if char.lower() in ['a', 'e', 'i', 'o', 'u']:\n            swedish_vowels += 1\n            \n    return swedish_vowels\n\n# Testa funktionen med en teststräng\ntest_text = \"I am a student of computer science.\"\nprint(count_sw",
+      "input_tokens": 123,
+      "generated_tokens": 128,
+      "gen_time_s": 13.49,
+      "tokens_per_sec": 9.49,
+      "auto_checks": {
+        "contains_cjk": false,
+        "expected_answer_match": null,
+        "code_exec_pass": false,
+        "code_exec_error": "SyntaxError: invalid syntax"
+      }
+    },
+    {
+      "prompt_id": "code_eval_02",
+      "response_id": "resp_120cf657de55",
+      "split": "eval",
+      "category": "coding_sv",
+      "priority": "non_negotiable",
+      "prompt": "Skriv en Python-funktion med exakt signaturen `def is_palindrome(s):` som returnerar `True` om `s` är ett palindrom när mellanslag och skillnad mellan stora/små bokstäver ignoreras, annars `False`. Ge bara Python-kod i ett kodblock.",
+      "response_text": "```python\ndef is_palindrome(s):\n    # Skapar en variabel för att använda index\n    s = list(s)\n    \n    # Om antal bokstaver är lika med antal bokstaver från början till slut\n    if len(s) == len(list(reversed(s))):\n        # Itererade igenom bokstaven och testar om bokstav är lika med bokstav från början\n        for i in range(len(s)):\n            if s[i] != s[len(s)-1-i]:\n                return False\n        return True",
+      "input_tokens": 113,
+      "generated_tokens": 128,
+      "gen_time_s": 12.24,
+      "tokens_per_sec": 10.46,
+      "auto_checks": {
+        "contains_cjk": false,
+        "expected_answer_match": null,
+        "code_exec_pass": false,
+        "code_exec_error": "SyntaxError: invalid syntax"
+      }
+    },
+    {
+      "prompt_id": "code_eval_03",
+      "response_id": "resp_0b4ea065e39f",
+      "split": "eval",
+      "category": "coding_sv",
+      "priority": "non_negotiable",
+      "prompt": "Skriv en Python-funktion med exakt signaturen `def fizzbuzz_list(n):` som returnerar en lista med strängar för talen 1 till `n`: `'FizzBuzz'` om delbart med 15, `'Fizz'` om delbart med 3, `'Buzz'` om delbart med 5, annars `str(i)`. Ge bara Python-kod i ett kodblock.",
+      "response_text": "```python\ndef fizzbuzz_list(n):\n    result = []\n    for i in range(1, n+1):\n        if i % 15 == 0:\n            result.append(\"FizzBuzz\")\n        elif i % 3 == 0:\n            result.append(\"Fizz\")\n        elif i % 5 == 0:\n            result.append(\"Buzz\")\n        else:\n            result.append(str(i))\n    return result\n\n# Testa funktionen med olika värden\nprint(fizzbuzz_list(15)) # ['1', '2', '4', '6', '8', '10",
+      "input_tokens": 133,
+      "generated_tokens": 128,
+      "gen_time_s": 14.12,
+      "tokens_per_sec": 9.07,
+      "auto_checks": {
+        "contains_cjk": false,
+        "expected_answer_match": null,
+        "code_exec_pass": false,
+        "code_exec_error": "SyntaxError: invalid syntax"
+      }
+    },
+    {
+      "prompt_id": "code_eval_04",
+      "response_id": "resp_11ffdbce7883",
+      "split": "eval",
+      "category": "coding_sv",
+      "priority": "non_negotiable",
+      "prompt": "Skriv en Python-funktion med exakt signaturen `def second_largest(nums):` som returnerar det näst största unika heltalet i listan `nums`, eller `None` om det finns färre än två unika tal. Ge bara Python-kod i ett kodblock.",
+      "response_text": "```python\nimport numpy as np\n\ndef second_largest(nums):\n    \"\"\"\n    Returns the second largest unique number in a given list of numbers.\n    \n    If there are fewer than two unique numbers, returns None.\n\n    Examples:\n    >>> second_largest([10, 20, 4, 5])\n    20\n    >>> second_largest([3, 3, 7, 8, 9])\n    8\n    >>> second_largest([-1, -2, -3, -4])\n    None\n    \"\"\"\n    # Convert the list to a set to remove duplicates",
+      "input_tokens": 110,
+      "generated_tokens": 128,
+      "gen_time_s": 11.99,
+      "tokens_per_sec": 10.67,
+      "auto_checks": {
+        "contains_cjk": false,
+        "expected_answer_match": null,
+        "code_exec_pass": false,
+        "code_exec_error": "SyntaxError: invalid syntax"
+      }
+    },
+    {
+      "prompt_id": "ctrl_dev_01",
+      "response_id": "resp_26f5b2094e36",
+      "split": "dev",
+      "category": "control_en",
+      "priority": "non_negotiable",
+      "prompt": "Explain briefly why ocean tides occur and mention the main astronomical body responsible.",
+      "response_text": "Ocean tides occur because of the gravitational pull of the Moon on the Earth's oceans. The Moon's gravity causes water to bulge outward, creating high tides at the shorelines where it meets the sea. This effect is most pronounced during new moon phases when the Moon is closest to the Earth.\n\nThe main astronomical body responsible for this phenomenon is the Moon. Its gravitational influence on the Earth's oceans creates these tidal forces that we observe.",
+      "input_tokens": 44,
+      "generated_tokens": 90,
+      "gen_time_s": 7.33,
+      "tokens_per_sec": 12.27,
+      "auto_checks": {
+        "contains_cjk": false,
+        "expected_answer_match": null,
+        "code_exec_pass": null,
+        "code_exec_error": null
+      }
+    },
+    {
+      "prompt_id": "ctrl_dev_02",
+      "response_id": "resp_63997b0418ed",
+      "split": "dev",
+      "category": "control_en",
+      "priority": "non_negotiable",
+      "prompt": "Write a Python function with the exact signature `def reverse_words(sentence):` that returns the words in `sentence` in reverse order separated by single spaces. Output only Python code in a code block.",
+      "response_text": "```python\ndef reverse_words(sentence):\n    # Split the sentence into words, reverse the list of words, then join them back into a string\n    return ' '.join(reversed(sentence.split()))\n\n# Example usage:\nprint(reverse_words(\"Hello world\"))  # Output: \"world Hello\"\n```",
+      "input_tokens": 68,
+      "generated_tokens": 61,
+      "gen_time_s": 7.48,
+      "tokens_per_sec": 8.15,
+      "auto_checks": {
+        "contains_cjk": false,
+        "expected_answer_match": null,
+        "code_exec_pass": true,
+        "code_exec_error": null
+      }
+    },
+    {
+      "prompt_id": "ctrl_eval_01",
+      "response_id": "resp_f51e8e466a75",
+      "split": "eval",
+      "category": "control_en",
+      "priority": "non_negotiable",
+      "prompt": "A train travels at 90 km/h for 2 hours and 30 minutes. How many kilometers does it travel in total? Answer with the number and 'km'.",
+      "response_text": "150 km",
+      "input_tokens": 64,
+      "generated_tokens": 5,
+      "gen_time_s": 2.11,
+      "tokens_per_sec": 2.37,
+      "auto_checks": {
+        "contains_cjk": false,
+        "expected_answer_match": false,
+        "code_exec_pass": null,
+        "code_exec_error": null
+      }
+    },
+    {
+      "prompt_id": "ctrl_eval_02",
+      "response_id": "resp_e5ae7b8cd772",
+      "split": "eval",
+      "category": "control_en",
+      "priority": "non_negotiable",
+      "prompt": "Read the text below and answer concisely in English.\nText: 'The Swedish Riksdag consists of 349 members elected every four years through proportional representation.'\nQuestion: How many members are in the Swedish Riksdag, and how often are elections held?",
+      "response_text": "There are 349 members in the Swedish Riksdag, and they are elected every four years through proportional representation.",
+      "input_tokens": 85,
+      "generated_tokens": 27,
+      "gen_time_s": 4.75,
+      "tokens_per_sec": 5.68,
+      "auto_checks": {
+        "contains_cjk": false,
+        "expected_answer_match": true,
+        "code_exec_pass": null,
+        "code_exec_error": null
+      }
+    }
+  ]
+}
