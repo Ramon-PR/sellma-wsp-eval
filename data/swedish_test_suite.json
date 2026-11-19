@@ -1,0 +1,357 @@
+{
+  "version": "1.0",
+  "description": "Swedish evaluation and regression test suite for SE.LLMA Weight-Space Programming investigation.",
+  "splits": {
+    "dev": 12,
+    "eval": 20
+  },
+  "prompts": [
+    {
+      "prompt_id": "ev_dev_01",
+      "split": "dev",
+      "category": "everyday_sv",
+      "priority": "target",
+      "system_prompt": "Du är en hjälpsam assistent som svarar kortfattat, korrekt och på naturlig svenska.",
+      "prompt": "Förklara kortfattat vad artificiell intelligens är och ge två konkreta exempel från vardagen.",
+      "expected_answer": null,
+      "test_cases": []
+    },
+    {
+      "prompt_id": "ev_dev_02",
+      "split": "dev",
+      "category": "everyday_sv",
+      "priority": "target",
+      "system_prompt": "Du är en hjälpsam assistent som svarar kortfattat, korrekt och på naturlig svenska.",
+      "prompt": "Skriv ett kort och artigt mejl på svenska till en kollega för att flytta ett lunchmöte till i morgon klockan 12:30.",
+      "expected_answer": null,
+      "test_cases": []
+    },
+    {
+      "prompt_id": "ev_dev_03",
+      "split": "dev",
+      "category": "everyday_sv",
+      "priority": "target",
+      "system_prompt": "Du är en hjälpsam assistent som svarar kortfattat, korrekt och på naturlig svenska.",
+      "prompt": "Skriv tre korta meningar på svenska där du använder uttrycken 'ett rött hus', 'ett stort bord' och 'en ny bil'.",
+      "expected_answer": null,
+      "test_cases": []
+    },
+    {
+      "prompt_id": "ev_eval_01",
+      "split": "eval",
+      "category": "everyday_sv",
+      "priority": "target",
+      "system_prompt": "Du är en hjälpsam assistent som svarar kortfattat, korrekt och på naturlig svenska.",
+      "prompt": "Ge tre praktiska tips för att spara el hemma under vintern i Sverige.",
+      "expected_answer": null,
+      "test_cases": []
+    },
+    {
+      "prompt_id": "ev_eval_02",
+      "split": "eval",
+      "category": "everyday_sv",
+      "priority": "target",
+      "system_prompt": "Du är en hjälpsam assistent som svarar kortfattat, korrekt och på naturlig svenska.",
+      "prompt": "Skriv ett kort meddelande till förskolan för att berätta att ditt barn har feber i dag och därför stannar hemma.",
+      "expected_answer": null,
+      "test_cases": []
+    },
+    {
+      "prompt_id": "ev_eval_03",
+      "split": "eval",
+      "category": "everyday_sv",
+      "priority": "target",
+      "system_prompt": "Du är en hjälpsam assistent som svarar kortfattat, korrekt och på naturlig svenska.",
+      "prompt": "Förklara kort på svenska hur man väljer mellan artiklarna 'en' och 'ett' och ge tre exempel med substantiv.",
+      "expected_answer": null,
+      "test_cases": []
+    },
+    {
+      "prompt_id": "ev_eval_04",
+      "split": "eval",
+      "category": "everyday_sv",
+      "priority": "target",
+      "system_prompt": "Du är en hjälpsam assistent som svarar kortfattat, korrekt och på naturlig svenska.",
+      "prompt": "Varför är källsortering av matavfall och förpackningar viktig? Svara med tre korta punkter på svenska.",
+      "expected_answer": null,
+      "test_cases": []
+    },
+    {
+      "prompt_id": "ev_eval_05",
+      "split": "eval",
+      "category": "everyday_sv",
+      "priority": "target",
+      "system_prompt": "Du är en hjälpsam assistent som svarar kortfattat, korrekt och på naturlig svenska.",
+      "prompt": "Beskriv i fyra enkla steg hur man kokar vanlig havregrynsgröt på spisen.",
+      "expected_answer": null,
+      "test_cases": []
+    },
+    {
+      "prompt_id": "pub_dev_01",
+      "split": "dev",
+      "category": "public_services_sv",
+      "priority": "target",
+      "system_prompt": "Du är en hjälpsam assistent som svarar kortfattat, korrekt och på naturlig svenska.",
+      "prompt": "Vad innebär VAB (vård av barn) i Sverige och vilken myndighet ansvarar för att betala ut ersättningen?",
+      "expected_answer": null,
+      "test_cases": []
+    },
+    {
+      "prompt_id": "pub_dev_02",
+      "split": "dev",
+      "category": "public_services_sv",
+      "priority": "target",
+      "system_prompt": "Du är en hjälpsam assistent som svarar kortfattat, korrekt och på naturlig svenska.",
+      "prompt": "Vad innebär det att deklarera sin inkomst hos Skatteverket varje år, och vad är skillnaden mellan kvarskatt och skatteåterbäring?",
+      "expected_answer": null,
+      "test_cases": []
+    },
+    {
+      "prompt_id": "pub_dev_03",
+      "split": "dev",
+      "category": "public_services_sv",
+      "priority": "target",
+      "system_prompt": "Du är en hjälpsam assistent som svarar kortfattat, korrekt och på naturlig svenska.",
+      "prompt": "Läs texten nedan och svara på frågan på svenska.\nText: 'Om du är sjuk i mer än sju dagar i följd behöver du vanligtvis lämna ett läkarintyg till din arbetsgivare från och med den åttonde sjukdagen. De första 14 dagarna betalar arbetsgivaren sjuklön, med ett karensavdrag.'\nFråga: Från vilken sjukdag behövs vanligtvis läkarintyg, och vem betalar ersättningen under de första 14 dagarna?",
+      "expected_answer": null,
+      "test_cases": []
+    },
+    {
+      "prompt_id": "pub_eval_01",
+      "split": "eval",
+      "category": "public_services_sv",
+      "priority": "target",
+      "system_prompt": "Du är en hjälpsam assistent som svarar kortfattat, korrekt och på naturlig svenska.",
+      "prompt": "Vad är ett personnummer i Sverige och vilken myndighet ansvarar för folkbokföringen?",
+      "expected_answer": null,
+      "test_cases": []
+    },
+    {
+      "prompt_id": "pub_eval_02",
+      "split": "eval",
+      "category": "public_services_sv",
+      "priority": "target",
+      "system_prompt": "Du är en hjälpsam assistent som svarar kortfattat, korrekt och på naturlig svenska.",
+      "prompt": "Förklara kort vad ett karensavdrag betyder när en anställd blir sjukskriven i Sverige.",
+      "expected_answer": null,
+      "test_cases": []
+    },
+    {
+      "prompt_id": "pub_eval_03",
+      "split": "eval",
+      "category": "public_services_sv",
+      "priority": "target",
+      "system_prompt": "Du är en hjälpsam assistent som svarar kortfattat, korrekt och på naturlig svenska.",
+      "prompt": "Vad är skillnaden mellan att vara folkbokförd på en adress och att anmäla en tillfällig postadress i Sverige?",
+      "expected_answer": null,
+      "test_cases": []
+    },
+    {
+      "prompt_id": "pub_eval_04",
+      "split": "eval",
+      "category": "public_services_sv",
+      "priority": "target",
+      "system_prompt": "Du är en hjälpsam assistent som svarar kortfattat, korrekt och på naturlig svenska.",
+      "prompt": "Läs texten nedan och svara på frågan på svenska.\nText: 'Föräldrapenning kan tas ut fram till dess att barnet fyller 12 år eller slutar årskurs 5. Totalt finns 480 dagar med föräldrapenning per barn, varav 90 dagar är reserverade för vardera föräldern vid gemensam vårdnad.'\nFråga: Hur många dagar med föräldrapenning finns det totalt per barn, och hur många är reserverade för vardera föräldern vid gemensam vårdnad?",
+      "expected_answer": null,
+      "test_cases": []
+    },
+    {
+      "prompt_id": "pub_eval_05",
+      "split": "eval",
+      "category": "public_services_sv",
+      "priority": "target",
+      "system_prompt": "Du är en hjälpsam assistent som svarar kortfattat, korrekt och på naturlig svenska.",
+      "prompt": "Läs texten nedan och svara på frågan på svenska.\nText: 'Om du säljer en bostad med vinst ska du redovisa försäljningen i din inkomstdeklaration året efter. Du kan i vissa fall ansöka om uppskov med skatten om du köper en ny ersättningsbostad.'\nFråga: När ska bostadsförsäljningen redovisas i deklarationen, och vad kan man ansöka om när man köper en ny ersättningsbostad?",
+      "expected_answer": null,
+      "test_cases": []
+    },
+    {
+      "prompt_id": "reas_dev_01",
+      "split": "dev",
+      "category": "reasoning_sv",
+      "priority": "non_negotiable",
+      "system_prompt": "Du är en hjälpsam assistent som svarar kortfattat, korrekt och på naturlig svenska.",
+      "prompt": "Ett tåg avgår från Stockholm klockan 09:40 och resan till Göteborg tar 3 timmar och 35 minuter. Vilken tid kommer tåget fram? Svara med klockslaget i formatet HH:MM.",
+      "expected_answer": "13:15",
+      "test_cases": []
+    },
+    {
+      "prompt_id": "reas_dev_02",
+      "split": "dev",
+      "category": "reasoning_sv",
+      "priority": "non_negotiable",
+      "system_prompt": "Du är en hjälpsam assistent som svarar kortfattat, korrekt och på naturlig svenska.",
+      "prompt": "En jacka kostar 800 kronor och är nedsatt med 25 procent. Hur mycket kostar jackan efter rabatten? Svara på svenska med beloppet i kronor.",
+      "expected_answer": "600",
+      "test_cases": []
+    },
+    {
+      "prompt_id": "reas_eval_01",
+      "split": "eval",
+      "category": "reasoning_sv",
+      "priority": "non_negotiable",
+      "system_prompt": "Du är en hjälpsam assistent som svarar kortfattat, korrekt och på naturlig svenska.",
+      "prompt": "Anna är äldre än Erik. Erik är äldre än Maja. Maja är äldre än Oscar. Vem är yngst? Svara med namnet och en kort mening på svenska.",
+      "expected_answer": "Oscar",
+      "test_cases": []
+    },
+    {
+      "prompt_id": "reas_eval_02",
+      "split": "eval",
+      "category": "reasoning_sv",
+      "priority": "non_negotiable",
+      "system_prompt": "Du är en hjälpsam assistent som svarar kortfattat, korrekt och på naturlig svenska.",
+      "prompt": "En butik säljer 3 äpplen för 18 kronor. Hur mycket kostar 7 äpplen till samma pris per styck?",
+      "expected_answer": "42",
+      "test_cases": []
+    },
+    {
+      "prompt_id": "reas_eval_03",
+      "split": "eval",
+      "category": "reasoning_sv",
+      "priority": "non_negotiable",
+      "system_prompt": "Du är en hjälpsam assistent som svarar kortfattat, korrekt och på naturlig svenska.",
+      "prompt": "Om alla rosor är blommor och vissa blommor vissnar snabbt, kan vi då säkert veta att alla rosor vissnar snabbt? Svara med 'Ja' eller 'Nej' och förklara kort på svenska.",
+      "expected_answer": "Nej",
+      "test_cases": []
+    },
+    {
+      "prompt_id": "reas_eval_04",
+      "split": "eval",
+      "category": "reasoning_sv",
+      "priority": "non_negotiable",
+      "system_prompt": "Du är en hjälpsam assistent som svarar kortfattat, korrekt och på naturlig svenska.",
+      "prompt": "Sara läser 15 sidor om dagen i en bok med 120 sidor. Hur många dagar tar det för henne att läsa ut hela boken?",
+      "expected_answer": "8",
+      "test_cases": []
+    },
+    {
+      "prompt_id": "code_dev_01",
+      "split": "dev",
+      "category": "coding_sv",
+      "priority": "non_negotiable",
+      "system_prompt": "Du är en hjälpsam assistent som svarar kortfattat, korrekt och på naturlig svenska.",
+      "prompt": "Skriv en Python-funktion med exakt signaturen `def sum_even(nums):` som returnerar summan av alla jämna heltal i listan `nums`. Ge bara Python-kod i ett kodblock.",
+      "expected_answer": null,
+      "test_cases": [
+        "assert sum_even([1, 2, 3, 4, 6]) == 12",
+        "assert sum_even([]) == 0",
+        "assert sum_even([-2, 5, 0]) == -2"
+      ]
+    },
+    {
+      "prompt_id": "code_dev_02",
+      "split": "dev",
+      "category": "coding_sv",
+      "priority": "non_negotiable",
+      "system_prompt": "Du är en hjälpsam assistent som svarar kortfattat, korrekt och på naturlig svenska.",
+      "prompt": "Skriv en Python-funktion med exakt signaturen `def celsius_to_fahrenheit(c):` som omvandlar grader Celsius till Fahrenheit. Ge bara Python-kod i ett kodblock.",
+      "expected_answer": null,
+      "test_cases": [
+        "assert celsius_to_fahrenheit(0) == 32",
+        "assert celsius_to_fahrenheit(100) == 212",
+        "assert abs(celsius_to_fahrenheit(-40) - (-40)) < 1e-6"
+      ]
+    },
+    {
+      "prompt_id": "code_eval_01",
+      "split": "eval",
+      "category": "coding_sv",
+      "priority": "non_negotiable",
+      "system_prompt": "Du är en hjälpsam assistent som svarar kortfattat, korrekt och på naturlig svenska.",
+      "prompt": "Skriv en Python-funktion med exakt signaturen `def count_swedish_vowels(text):` som räknar antalet svenska vokaler (`a, e, i, o, u, y, å, ä, ö`, både stora och små bokstäver) i strängen `text`. Ge bara Python-kod i ett kodblock.",
+      "expected_answer": null,
+      "test_cases": [
+        "assert count_swedish_vowels('Hej världen!') == 3",
+        "assert count_swedish_vowels('ÅÄÖy') == 4",
+        "assert count_swedish_vowels('bcdfg') == 0"
+      ]
+    },
+    {
+      "prompt_id": "code_eval_02",
+      "split": "eval",
+      "category": "coding_sv",
+      "priority": "non_negotiable",
+      "system_prompt": "Du är en hjälpsam assistent som svarar kortfattat, korrekt och på naturlig svenska.",
+      "prompt": "Skriv en Python-funktion med exakt signaturen `def is_palindrome(s):` som returnerar `True` om `s` är ett palindrom när mellanslag och skillnad mellan stora/små bokstäver ignoreras, annars `False`. Ge bara Python-kod i ett kodblock.",
+      "expected_answer": null,
+      "test_cases": [
+        "assert is_palindrome('Ni talar bra latin') is True",
+        "assert is_palindrome('Anna') is True",
+        "assert is_palindrome('Stockholm') is False"
+      ]
+    },
+    {
+      "prompt_id": "code_eval_03",
+      "split": "eval",
+      "category": "coding_sv",
+      "priority": "non_negotiable",
+      "system_prompt": "Du är en hjälpsam assistent som svarar kortfattat, korrekt och på naturlig svenska.",
+      "prompt": "Skriv en Python-funktion med exakt signaturen `def fizzbuzz_list(n):` som returnerar en lista med strängar för talen 1 till `n`: `'FizzBuzz'` om delbart med 15, `'Fizz'` om delbart med 3, `'Buzz'` om delbart med 5, annars `str(i)`. Ge bara Python-kod i ett kodblock.",
+      "expected_answer": null,
+      "test_cases": [
+        "assert fizzbuzz_list(5) == ['1', '2', 'Fizz', '4', 'Buzz']",
+        "assert fizzbuzz_list(15)[-1] == 'FizzBuzz'",
+        "assert fizzbuzz_list(0) == []"
+      ]
+    },
+    {
+      "prompt_id": "code_eval_04",
+      "split": "eval",
+      "category": "coding_sv",
+      "priority": "non_negotiable",
+      "system_prompt": "Du är en hjälpsam assistent som svarar kortfattat, korrekt och på naturlig svenska.",
+      "prompt": "Skriv en Python-funktion med exakt signaturen `def second_largest(nums):` som returnerar det näst största unika heltalet i listan `nums`, eller `None` om det finns färre än två unika tal. Ge bara Python-kod i ett kodblock.",
+      "expected_answer": null,
+      "test_cases": [
+        "assert second_largest([3, 1, 4, 4, 2]) == 3",
+        "assert second_largest([5, 5]) is None",
+        "assert second_largest([-10, -2, -5]) == -5"
+      ]
+    },
+    {
+      "prompt_id": "ctrl_dev_01",
+      "split": "dev",
+      "category": "control_en",
+      "priority": "non_negotiable",
+      "system_prompt": "You are a helpful assistant who answers concisely and accurately in English.",
+      "prompt": "Explain briefly why ocean tides occur and mention the main astronomical body responsible.",
+      "expected_answer": null,
+      "test_cases": []
+    },
+    {
+      "prompt_id": "ctrl_dev_02",
+      "split": "dev",
+      "category": "control_en",
+      "priority": "non_negotiable",
+      "system_prompt": "You are a helpful assistant who answers concisely and accurately in English.",
+      "prompt": "Write a Python function with the exact signature `def reverse_words(sentence):` that returns the words in `sentence` in reverse order separated by single spaces. Output only Python code in a code block.",
+      "expected_answer": null,
+      "test_cases": [
+        "assert reverse_words('hello world today') == 'today world hello'",
+        "assert reverse_words('python') == 'python'"
+      ]
+    },
+    {
+      "prompt_id": "ctrl_eval_01",
+      "split": "eval",
+      "category": "control_en",
+      "priority": "non_negotiable",
+      "system_prompt": "You are a helpful assistant who answers concisely and accurately in English.",
+      "prompt": "A train travels at 90 km/h for 2 hours and 30 minutes. How many kilometers does it travel in total? Answer with the number and 'km'.",
+      "expected_answer": "225",
+      "test_cases": []
+    },
+    {
+      "prompt_id": "ctrl_eval_02",
+      "split": "eval",
+      "category": "control_en",
+      "priority": "non_negotiable",
+      "system_prompt": "You are a helpful assistant who answers concisely and accurately in English.",
+      "prompt": "Read the text below and answer concisely in English.\nText: 'The Swedish Riksdag consists of 349 members elected every four years through proportional representation.'\nQuestion: How many members are in the Swedish Riksdag, and how often are elections held?",
+      "expected_answer": "349",
+      "test_cases": []
+    }
+  ]
+}

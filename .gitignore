@@ -1,0 +1,50 @@
+# Local / private files
+_ignore/
+*:Zone.Identifier
+.codegraph/
+.agents/
+skills-lock.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Virtual environments & env vars
+.venv/
+venv/
+env/
+.env
+.env.*
+
+# Marimo
+.__marimo__/
+__marimo__/
+
+# Model weights, datasets & caches (keep small result files tracked)
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.onnx
+*.gguf
+.cache/
+huggingface/
+models/
+checkpoints/
+
+# OS & Editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
