@@ -939,9 +939,8 @@ Following the arguments presented in Section 1, if I had more time and compute r
         )
 
         rec_text = (
-            "**I do not recommend pursuing LLM-driven or data-free static weight-space programming for SE.LLMA.** "
-            "Sending weights as text strings through proprietary frontier APIs is expensive, breaks technological sovereignty, and in my tests static weight inspection failed to predict which layers actually matter (`r = -0.0747`) while manual column edits produced zero held-out Swedish improvement. "
-            "Instead, I think SE.LLMA should keep investing in sovereign continued pretraining and standard gradient-based methods (`AdamW`, `Muon`, `LoRA`), while adopting the **awake-mapping idea**—setting clear *stop-point* test suites for abilities that must not degrade before running any optimization."
+            "As shown in my tests above, I did not have enough training examples (`12 dev` items) or local compute resources (laptop CPU, `0.5B` model) to draw a definitive head-to-head comparison against the paper's full frontier setup. "
+            "**With proper compute, I would recommend that SE.LLMA run a small benchmark replication of the paper's approach on a small- or medium-sized model for Swedish** to test it directly under equal conditions, while keeping in mind its high frontier-API costs, sovereignty drawbacks, and my finding that simple static weight inspection did not match awake causal layer sensitivity (`r = -0.0747`)."
         )
     else:
         interp_md = "\n".join(
@@ -965,12 +964,12 @@ Following the arguments presented in Section 1, if I had more time and compute r
             "## 5. Interpretation, Limitations & Recommendation for SE.LLMA",
             interp_md,
             """### 5.2 Limitations
-- **Hardware, time & model scale:** Because I ran everything locally on a laptop CPU (`AMD Ryzen 7 5800U`, `6.7 GiB` RAM, no GPU) within a 4-hour budget (`~91 min` for the 6-arm `--nll-only` run, `~68.6 min` of which was `Micro-LoRA` backprop), I had to test a `0.5B`-parameter model (`Qwen/Qwen2.5-0.5B-Instruct`) that has very limited built-in Swedish compared to 7B+ SE.LLMA models.
-- **Small dataset (`12 dev` / `20 eval`) & NLL evaluation:** A `32`-prompt suite was small enough to run and inspect carefully on CPU, using deterministic teacher-forced NLL across the 6 arms instead of generating full text for every arm and seed—which also meant `Micro-LoRA` only had `12` training examples and quickly overfit open-ended Swedish.
-- **Simple manual edit rule:** My gradient-free tests only scaled `256` columns in `mlp.down_proj`; more complex edits could behave differently, though they still face the same trial-and-error search bottleneck.""",
+- **Limited examples and compute (cannot directly compare to the paper's full setup):** As seen throughout my results, I worked with very few examples (`12 dev` / `20 eval`) and limited local compute (`AMD Ryzen 7 5800U` CPU, `6.7 GiB` RAM, no GPU, `~91 min` for the 6-arm `--nll-only` run on a `0.5B` model). Because my local tests are constrained in data, model size, and edit complexity (scaling `256` `mlp.down_proj` columns without a frontier-LLM feedback loop), they cannot serve as a direct 1-to-1 comparison against the paper's full frontier setup—and with only `12` training examples, even `Micro-LoRA` quickly overfit open-ended Swedish.""",
             f"""### 5.3 Recommendation for SE.LLMA
 - **Should SE.LLMA investigate Weight-Space Programming further?** {rec_text}
-- **What I would test next with more compute:** On a medium-sized (`7B–14B`) open checkpoint with stronger Swedish foundations, I would use **awake layer probing with stop-point constraints** (English, coding, and reasoning) to see which layers are safest to adapt, and compare standard `LoRA` / `Muon` fine-tuning against **layer-selective `LoRA`**—or explore a small, dedicated **selective optimizer** that operates directly on floating-point weights via attention without converting numbers into text tokens.""",
+- **What I would test next with more time and compute:**
+  1. **Direct WSP test on a small/medium model for Swedish:** Replicate the paper's actual iterative WSP workflow on a small- or medium-sized open language model evaluated on a larger Swedish diagnostic and *stop-point* suite (English, coding, reasoning), comparing it fairly against standard gradient fine-tuning (`AdamW`, `Muon`, `LoRA` / `QLoRA`) and awake layer-selective `LoRA`.
+  2. **Develop the dedicated "intelligent optimizer" proposed in Section 1:** Instead of converting floating-point weights into text strings and passing them through an LLM tokenizer, explore training a small, dedicated **selective optimizer** that reads weights directly in their native numerical form and uses conditioning inputs and attention mechanisms to target specific weights.""",
         ]
     )
 
@@ -1142,8 +1141,8 @@ With limited local resources (`AMD Ryzen 7 5800U` CPU, `6.7 GiB` RAM, no GPU, 4-
 
 ## 4. Interpretation, Limitations & Recommendation
 {interp_block}
-- **Limitations:** Laptop CPU budget (`~91 min` for the 6-arm `--nll-only` run), `0.5B` model scale, `32`-prompt suite (`12 dev` / `20 eval`), teacher-forced `NLL`, and linear column scaling on `mlp.down_proj`.
-- **My recommendation for SE.LLMA:** **Do not pursue LLM-driven or data-free static weight-space programming** to train or fix Swedish models—it is costly, threatens sovereignty, failed to locate the right layers (`r = -0.0747`), and gave zero gain over random edits. Focus instead on sovereign continued pretraining and gradient fine-tuning (`AdamW`, `Muon`, `LoRA`) paired with **awake stop-point test suites**. *Next experiment with more compute:* Use awake stop-point probing on a `7B–14B` Swedish checkpoint to guide layer-selective `LoRA` (or test a small dedicated attention-based optimizer acting directly on numeric weights).
+- **Limitations (why my tests cannot directly compare to the paper):** As shown above, I did not have enough training examples (`12 dev` / `20 eval`) or compute resources (laptop CPU, `6.7 GiB` RAM, `0.5B` model, `~91 min` for the `--nll-only` run) to make a direct comparison against the paper's frontier setup: with only `12` examples `Micro-LoRA` overfit open-ended Swedish, and my gradient-free tests only scaled `256` `mlp.down_proj` columns.
+- **My recommendation for SE.LLMA:** Given these local constraints, **I recommend that SE.LLMA test the paper's WSP approach as an exploratory benchmark on a small- or medium-sized model for Swedish** (comparing it fairly against `LoRA`/`QLoRA` and gradient methods while guarding *stop-point* abilities), **and explore developing the dedicated "intelligent optimizer" described earlier**—a selective optimizer that operates directly on numerical floating-point weights via conditioning inputs and attention, skipping text conversion and tokenization altogether.
 
 ## 5. Reproducibility & AI Usage
 - **Reproduce:** `uv sync && uv run python -m src.wsp_experiment --nll-only && uv run python -m src.report_builder`
