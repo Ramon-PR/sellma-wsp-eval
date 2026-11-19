@@ -622,8 +622,10 @@ Following the arguments presented in Section 1, if I had more time and compute r
 1. **Unchanged Baseline:** Evaluate `Qwen2.5-0.5B-Instruct` untouched on all 20 held-out `eval` prompts to establish reference NLL scores for Swedish targets and protected stop-points.
 2. **Static Weight Edit (WSP — zero forward passes):** Compute a "Swedish minus English" vector statically from the output vocabulary matrix (`lm_head.weight`: tokens with `å, ä, ö` and 36 Swedish vs. 30 English function words), find the top-`256` most aligned `mlp.down_proj` columns (`229,376` weights), and scale them by `1.15×` (`+15%`) without running any prompts through the model.
 3. **Awake DES Edit:**
-   - *Layer probing:* Run a balanced 6-prompt `dev` subset (`3` Swedish targets + `3` stop-points: reasoning, coding, English) while scaling each of the `24` `mlp.down_proj` layers down by `0.85×` one by one, selecting the top-4 layers (`[1, 22, 16, 19]`) that affect Swedish with minimal stop-point disruption.
-   - *Column edit & safe calibration:* Inside those 4 layers, select the top-`256` columns aligned with `dev` hidden-state differences (`SV − EN`), test scaling `α ∈ {0.05, 0.10, 0.15, -0.10}` on `dev`, and pick `α = 0.05` (`+5%`) under the constraint `ΔEN_dev ≤ 0.05`.
+
+    - *Layer probing:* Run a balanced 6-prompt `dev` subset (`3` Swedish targets + `3` stop-points: reasoning, coding, English) while scaling each of the `24` `mlp.down_proj` layers down by `0.85×` one by one, selecting the top-4 layers (`[1, 22, 16, 19]`) that affect Swedish with minimal stop-point disruption.
+    - *Column edit & safe calibration:* Inside those 4 layers, select the top-`256` columns aligned with `dev` hidden-state differences (`SV − EN`), test scaling `α ∈ {0.05, 0.10, 0.15, -0.10}` on `dev`, and pick `α = 0.05` (`+5%`) under the constraint `ΔEN_dev ≤ 0.05`.
+
 4. **Random / Untargeted Edit (noise control, 3 seeds):** Sample `256` `(layer, column)` pairs uniformly at random across all 24 layers (seeds `42, 123, 999`) and scale them by `1.15×` (`+15%`) to test whether targeted edits outperform random weight changes of the same magnitude.
 5. **Prompting Control (no weight edits):** Leave every weight untouched and prepend a strict Swedish system prompt (`STRICT_SV_SYSTEM_PROMPT`) instructing the model to answer purely in Swedish and output clean Python without extra tests.
 6. **Micro-LoRA (classic gradient baseline):** Freeze the `bfloat16` base model, attach small trainable `LoRA` adapters (`r=4`, `lora_alpha=8.0`, `138,240` params) to `mlp.down_proj` in the last 6 layers (`18..23`), and train with `AdamW` (`lr=5e-4`) for `18` steps (`grad_accum=4`) solely on the `12 dev` examples."""
@@ -968,8 +970,9 @@ Following the arguments presented in Section 1, if I had more time and compute r
             f"""### 5.3 Recommendation for SE.LLMA
 - **Should SE.LLMA investigate Weight-Space Programming further?** {rec_text}
 - **What I would test next with more time and compute:**
-  1. **Direct WSP test on a small/medium model for Swedish:** Replicate the paper's actual iterative WSP workflow on a small- or medium-sized open language model evaluated on a larger Swedish diagnostic and *stop-point* suite (English, coding, reasoning), comparing it fairly against standard gradient fine-tuning (`AdamW`, `Muon`, `LoRA` / `QLoRA`) and awake layer-selective `LoRA`.
-  2. **Develop the dedicated "intelligent optimizer" proposed in Section 1:** Instead of converting floating-point weights into text strings and passing them through an LLM tokenizer, explore training a small, dedicated **selective optimizer** that reads weights directly in their native numerical form and uses conditioning inputs and attention mechanisms to target specific weights.""",
+
+    1. **Direct WSP test on a small/medium model for Swedish:** Replicate the paper's actual iterative WSP workflow on a small- or medium-sized open language model evaluated on a larger Swedish diagnostic and *stop-point* suite (English, coding, reasoning), comparing it fairly against standard gradient fine-tuning (`AdamW`, `Muon`, `LoRA` / `QLoRA`) and awake layer-selective `LoRA`.
+    2. **Develop the dedicated "intelligent optimizer" proposed in Section 1:** Instead of converting floating-point weights into text strings and passing them through an LLM tokenizer, explore training a small, dedicated **selective optimizer** that reads weights directly in their native numerical form and uses conditioning inputs and attention mechanisms to target specific weights.""",
         ]
     )
 
@@ -1142,7 +1145,7 @@ With limited local resources (`AMD Ryzen 7 5800U` CPU, `6.7 GiB` RAM, no GPU, 4-
 ## 4. Interpretation, Limitations & Recommendation
 {interp_block}
 - **Limitations (why my tests cannot directly compare to the paper):** As shown above, I did not have enough training examples (`12 dev` / `20 eval`) or compute resources (laptop CPU, `6.7 GiB` RAM, `0.5B` model, `~91 min` for the `--nll-only` run) to make a direct comparison against the paper's frontier setup: with only `12` examples `Micro-LoRA` overfit open-ended Swedish, and my gradient-free tests only scaled `256` `mlp.down_proj` columns.
-- **My recommendation for SE.LLMA:** Given these local constraints, **I recommend that SE.LLMA test the paper's WSP approach as an exploratory benchmark on a small- or medium-sized model for Swedish** (comparing it fairly against `LoRA`/`QLoRA` and gradient methods while guarding *stop-point* abilities), **and explore developing the dedicated "intelligent optimizer" described earlier**—a selective optimizer that operates directly on numerical floating-point weights via conditioning inputs and attention, skipping text conversion and tokenization altogether.
+- **My recommendation for SE.LLMA:** Given these local constraints, **I recommend that SE.LLMA test the paper's WSP approach as an exploratory benchmark on a small- or medium-sized model for Swedish** (comparing it fairly against `LoRA`/`QLoRA` and gradient methods while guarding *stop-point* abilities), **and explore developing the dedicated "intelligent optimizer" detailed in Section 1 of `report/report.pdf`**—a selective optimizer that operates directly on numerical floating-point weights via conditioning inputs and attention, skipping text conversion and tokenization altogether.
 
 ## 5. Reproducibility & AI Usage
 - **Reproduce:** `uv sync && uv run python -m src.wsp_experiment --nll-only && uv run python -m src.report_builder`
@@ -1201,7 +1204,7 @@ def render_report_pdf(
     css = f"""
     @page {{
         size: A4 portrait;
-        margin: 15mm 15mm 17mm 15mm;
+        margin: 14mm 15mm 16mm 15mm;
         @top-left {{
             content: "SE.LLMA · Weight-Space Programming Evaluation";
             font-family: "Lato", "Open Sans", "Liberation Sans", sans-serif;
@@ -1243,8 +1246,8 @@ def render_report_pdf(
     }}
     body {{
         font-family: "Lato", "Open Sans", "Liberation Sans", sans-serif;
-        font-size: 8.8pt;
-        line-height: 1.42;
+        font-size: 8.6pt;
+        line-height: 1.39;
         color: #1e293b;
         margin: 0;
         padding: 0;
@@ -1300,7 +1303,7 @@ def render_report_pdf(
     h2 {{
         font-size: 11.6pt;
         font-weight: 700;
-        margin: 11pt 0 5pt 0;
+        margin: 9.5pt 0 4.5pt 0;
         padding-bottom: 2.5pt;
         border-bottom: 1.2pt solid #cbd5e1;
         color: #0f172a;
@@ -1396,7 +1399,7 @@ def render_report_pdf(
         overflow-wrap: break-word;
     }}
     td {{
-        padding: 4pt 5pt;
+        padding: 3.3pt 5pt;
         border: 0.5pt solid #cbd5e1;
         vertical-align: top;
         overflow-wrap: break-word;
