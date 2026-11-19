@@ -149,6 +149,15 @@ def _extract_experiment_view(details: dict[str, Any]) -> dict[str, Any]:
     base_nn = float(base_ev.get("sv_non_neg_nll", 0.0))
     base_en = float(base_ev.get("en_ctrl_nll", 0.0))
 
+    arm_display_names = {
+        "baseline": "1. Unchanged Baseline",
+        "wsp_static": "2. Static Weight Edit (WSP)",
+        "des_awake_edit": "3. Awake DES Edit",
+        "random_edit": "4. Random / Untargeted Edit (3 seeds)",
+        "prompt_control": "5a. Prompting / Inference Control",
+        "micro_lora": "5b. Micro-LoRA (layers 18..23, r=4)",
+    }
+
     arm_rows: list[dict[str, Any]] = []
     for key in ARM_ORDER:
         if key not in arms:
@@ -161,7 +170,7 @@ def _extract_experiment_view(details: dict[str, Any]) -> dict[str, Any]:
         arm_rows.append(
             {
                 "key": key,
-                "name": arm.get("name", key),
+                "name": arm_display_names.get(key, arm.get("name", key)),
                 "sv_target_nll": sv,
                 "sv_target_nll_std": arm.get("sv_target_nll_std"),
                 "delta_sv_nll": round(sv - base_sv, 4),
@@ -581,20 +590,16 @@ Following this analogy, before fine-tuning or optimizing a neural network, I fir
 
     sec2_hypothesis = """## 2. Hypothesis & Relevance to SE.LLMA
 
-### 2.1 Narrow Research Question
-In **`Qwen/Qwen2.5-0.5B-Instruct`** (`bfloat16` on CPU), can **data-free static weight inspection** (aligning `lm_head` Swedish–English token embeddings with `mlp.down_proj` columns) accurately localize and improve held-out Swedish language behavior without degrading non-negotiable English, coding, and reasoning *connectome-stop points*—and how does it compare against **awake DES causal layer probing**, **3-seed random edits**, **strict Swedish prompting**, and **gradient-based Micro-LoRA**?
+### 2.1 Plain-English Research Question
+Before investing SE.LLMA engineering time or compute into weight-space editing, I use **`Qwen/Qwen2.5-0.5B-Instruct`** (`bfloat16` on CPU) to answer three simple, practical questions:
 
-### 2.2 Three-Part Falsifiable Hypothesis
-- **H1 (Static vs. Awake Identifiability):** Static weight-space alignment (`lm_head` → `mlp.down_proj` cosine scores without forward passes) does **not** strongly correlate across layers with causal Swedish sensitivity measured under awake DES `0.85×` layer perturbations on `dev` (*paradox of non-locality*).
-- **H2 (Ceiling of Gradient-Free Weight Edits):** Gradient-free scaling of `K=256` `mlp.down_proj` columns—whether selected statically (WSP) or via awake DES—yields negligible or unstable held-out Swedish target NLL improvements over matched 3-seed random edits, or induces collateral regression on non-negotiable English/reasoning stop-points.
-- **H3 (Superiority of Conventional Alternatives for SE.LLMA):** Inference-time prompting (`STRICT_SV_SYSTEM_PROMPT`) and lightweight gradient adaptation (`Micro-LoRA` on `layers 18..23`, `r=4`, `138,240` trainable params on `dev`) achieve a strictly better balance of held-out Swedish NLL gain, stop-point preservation, and CPU compute cost.
+### 2.2 Three Testable Claims
+- **H1 — Can static weight inspection find the "Swedish weights"?** Looking at weight matrices without running the model (*static inspection*) will **not** accurately locate which layers actually control Swedish behavior when tested during active inference (*awake probing*).
+- **H2 — Can small, gradient-free edits fix Swedish without breaking other skills?** Scaling a targeted subset of weights without gradient training—whether chosen statically or via awake probing—will **not** meaningfully improve held-out Swedish over simply scaling random weights, or it will risk hurting protected abilities (*connectome-stop points* like English, coding, and reasoning).
+- **H3 — Do standard methods work better?** Keeping weights frozen with better prompting, or adapting them with lightweight gradient training (`Micro-LoRA`), will offer a cleaner and safer trade-off than manual weight edits.
 
-### 2.3 Why This Question Matters for SE.LLMA
-Before investing engineering time or sovereign compute budgets into LLM-driven weight-space programming—or risking reliance on foreign proprietary frontier APIs—SE.LLMA needs empirical evidence on whether static weight-space heuristics actually work on real multilingual transformer weights, and whether awake causal mapping or lightweight gradient tuning dominates them.
-
-### 2.4 Confirmation vs. Falsification Criteria
-- **Supporting Evidence:** Static layer scores exhibit weak correlation (`|r| < 0.5`) with awake DES sensitivity; Static WSP fails to outperform 3-seed random edits or triggers English stop-point NLL degradation; and Prompting or Micro-LoRA achieves lower held-out Swedish NLL with minimal stop-point regression (`ΔEN NLL ≤ +0.05`).
-- **Refuting Evidence:** Data-free Static WSP correlates strongly with DES causal sensitivity (`r ≥ 0.6`), significantly lowers held-out Swedish target NLL (`Δ ≤ -0.10` nats beyond 3-seed random std), beats Prompting and Micro-LoRA, and keeps non-negotiable stop-point NLL unchanged."""
+### 2.3 What Would Prove Me Wrong
+- Static weight scores correlate strongly with awake layer probing (`r ≥ 0.6`), **and** gradient-free column edits measurably lower held-out Swedish target NLL (`Δ ≤ -0.10` nats beyond 3-seed random noise), beat prompting and `Micro-LoRA`, and cause zero harm to non-negotiable English, coding, and reasoning stop-points."""
 
     sec3_design = """## 3. Experimental Design, Controls & Evaluation Protocol
 
@@ -603,23 +608,25 @@ Given limited local hardware resources (`AMD Ryzen 7 5800U` CPU, `6.7 GiB` total
 
 I chose **`Qwen/Qwen2.5-0.5B-Instruct`** (`1842.4 MB` peak RSS, `5.08 tok/s`) as my main experimental testbed because it fits comfortably in memory and already generates coherent, parseable Swedish while exhibiting clear, repairable defects—specifically **morphological agreement errors** (*"ett tekniskt utvecklade system"*) and **mid-sentence English code-switching** (*"Siri, Apple's smart home assistant"*). Using the same screening notebook and protocol, I could equally have attempted to repair the Swedish issues observed in the other candidate models included in the playground (such as `HuggingFaceTB/SmolLM2-360M-Instruct` at `1565.3 MB` peak RSS, which degenerated into broken pseudo-Swedish, as well as `HuggingFaceTB/SmolLM2-135M-Instruct` or `AI-Sweden-Models/gpt-sw3-126m`).
 
+Following the arguments presented in Section 1, if I had more time and compute resources, I would have liked to replicate the Weight-Space Programming (WSP) tests on a medium-sized language model applied directly to Swedish—comparing frontier-LLM WSP directly analyzing and modifying models like `Qwen` against standard gradient methods, `QLoRA`, and a small trained "intelligent optimizer" equipped with attention mechanisms and conditioned on a text input. Given the hardware and time constraints, I instead scoped and proposed a controlled small-scale study with a Gemini AI agent, presented next.
+
 ### 3.2 Step 2 — Diagnostic Suite & Split Discipline (`data/swedish_test_suite.json`, `notebooks/02_eval_qwen_suite.py`)
 - **Base Model & Determinism:** `Qwen/Qwen2.5-0.5B-Instruct` (`bfloat16` on CPU, `seed=42`, greedy decoding `do_sample=False`, `max_new_tokens=128`, `8` CPU threads).
-- **Strict `dev` vs. Held-Out `eval` Split:** `32` curated prompts pre-partitioned into **`12 dev`** (used exclusively for DES probing, `alpha` calibration, activation direction, and Micro-LoRA training) and **`20 eval`** (held-out evaluation).
+- **Suite Creation & Strict `dev` vs. Held-Out `eval` Split:** `32` diagnostic prompts proposed with **Gemini Hydrogen** and manually verified by me, pre-partitioned into **`12 dev`** (used exclusively for DES probing, `alpha` calibration, activation direction, and Micro-LoRA training) and **`20 eval`** (held-out evaluation).
 - **Target vs. Non-Negotiable Stop-Points:**
     - **`target` (16 prompts: 6 dev / 10 eval):** `everyday_sv` (`8`) and `public_services_sv` (`8`, covering *Skatteverket*, *Försäkringskassan*, *VAB*, *personnummer*, plus `3` short-context Swedish reading comprehension items).
     - **`non_negotiable` stop-points (16 prompts: 6 dev / 10 eval):** `reasoning_sv` (`6`), `coding_sv` (`6` verified by isolated Python subprocess unit tests), and `control_en` (`4` English control items).
-- **Decoupled Grading & Exact NLL:** Greedy generations (`results/qwen_baseline_responses.json`) carry opaque `response_id` hashes and automated checks (unit tests, expected-answer regex, CJK-leak detection) and are scored against gold `reference_answer` targets in `results/qwen_baseline_eval.json` (`is_correct`, `swedish_quality` `[0–2]`, `task_correctness` `[0–2]`, `failure_modes`). For the 6-arm comparison (`src/wsp_experiment.py`), I evaluate **exact teacher-forced target Negative Log-Likelihood (NLL)** and perplexity (PPL) over gold `reference_answer` tokens on all 20 held-out `eval` prompts, avoiding stochastic sampling variance while directly quantifying probability mass shifts on Swedish vs. English stop-points.
+- **Decoupled Grading & Exact NLL:** Greedy generations (`results/qwen_baseline_responses.json`) carry opaque `response_id` hashes and automated checks (unit tests, expected-answer regex, CJK-leak detection) and are evaluated with **Gemini Hydrogen** against gold `reference_answer` targets in `results/qwen_baseline_eval.json` (`is_correct`, `swedish_quality` `[0–2]`, `task_correctness` `[0–2]`, `failure_modes`), verified by me. For the 6-arm comparison (`src/wsp_experiment.py`), I evaluate **exact teacher-forced target Negative Log-Likelihood (NLL)** and **Perplexity (`PPL = exp(NLL)`)** over gold `reference_answer` tokens on all 20 held-out `eval` prompts. Intuitively, NLL is the standard cross-entropy loss (`-log p`) measuring how surprised the model is by the gold reference answer (**lower NLL/PPL = higher probability assigned to the right answer**), giving a deterministic and sensitive CPU signal of whether an intervention moves the model closer to or further from Swedish without hurting English stop-points.
 
-### 3.3 Step 3 — Six-Arm Experimental Protocol (`src/wsp_experiment.py`, `notebooks/03_wsp_interventions.py`)
-| Arm | Mechanism & Parameter Scope | Calibration / `dev` Data | Experimental Role |
-| :--- | :--- | :--- | :--- |
-| **1. Unchanged Baseline** | Unmodified `Qwen2.5-0.5B-Instruct` | None | Reference target & stop-point NLL |
-| **2. Static Weight Edit (WSP)** | Data-free `lm_head` (SV vs. EN token mean diff) → top-`256` `mlp.down_proj` columns scaled by `1 + α` (`α = 0.15`) | Zero forward passes | Tests static weight-space localization |
-| **3. Awake DES Edit** | Perturb each of 24 `mlp.down_proj` layers (`0.85×`) on `dev` probe; rank by selectivity `max(ΔSV,0) / (|ΔStop| + 0.01)`; pick top-4 layers + top-256 cols aligned to `dev` hidden SV−EN vector | `dev` probe + `α ∈ {0.05, 0.10, 0.15, -0.10}` subject to `ΔEN_dev ≤ 0.05` | Tests Martín-Fernández awake DES mapping analogy |
-| **4. Random / Untargeted Edit** | Uniformly sample `256` `(layer, col)` pairs across `mlp.down_proj`, scale by `1 + 0.15` across seeds `[42, 123, 999]` | None | Magnitude & parameter-count control (mean ± std) |
-| **5a. Prompting Control** | Prepend `STRICT_SV_SYSTEM_PROMPT` to `*_sv` tasks; zero weights edited | None | Tests inference-time steering / unbricking |
-| **5b. Micro-LoRA** | Pure-PyTorch frozen-base LoRA (`r=4`, `lora_alpha=8.0`) on `layers 18..23` `mlp.down_proj` (`138,240` params), `18` steps (`grad_accum=4`, `AdamW`, `lr=5e-4`) | Trained solely on `12 dev` items | Conventional gradient baseline |"""
+### 3.3 Step 3 — What Was Done in Each of the 6 Tests (`src/wsp_experiment.py`, `notebooks/03_wsp_interventions.py`)
+1. **Unchanged Baseline:** Evaluate `Qwen2.5-0.5B-Instruct` untouched on all 20 held-out `eval` prompts to establish reference NLL scores for Swedish targets and protected stop-points.
+2. **Static Weight Edit (WSP — zero forward passes):** Compute a "Swedish minus English" vector statically from the output vocabulary matrix (`lm_head.weight`: tokens with `å, ä, ö` and 36 Swedish vs. 30 English function words), find the top-`256` most aligned `mlp.down_proj` columns (`229,376` weights), and scale them by `1.15×` (`+15%`) without running any prompts through the model.
+3. **Awake DES Edit:**
+   - *Layer probing:* Run a balanced 6-prompt `dev` subset (`3` Swedish targets + `3` stop-points: reasoning, coding, English) while scaling each of the `24` `mlp.down_proj` layers down by `0.85×` one by one, selecting the top-4 layers (`[1, 22, 16, 19]`) that affect Swedish with minimal stop-point disruption.
+   - *Column edit & safe calibration:* Inside those 4 layers, select the top-`256` columns aligned with `dev` hidden-state differences (`SV − EN`), test scaling `α ∈ {0.05, 0.10, 0.15, -0.10}` on `dev`, and pick `α = 0.05` (`+5%`) under the constraint `ΔEN_dev ≤ 0.05`.
+4. **Random / Untargeted Edit (noise control, 3 seeds):** Sample `256` `(layer, column)` pairs uniformly at random across all 24 layers (seeds `42, 123, 999`) and scale them by `1.15×` (`+15%`) to test whether targeted edits outperform random weight changes of the same magnitude.
+5. **Prompting Control (no weight edits):** Leave every weight untouched and prepend a strict Swedish system prompt (`STRICT_SV_SYSTEM_PROMPT`) instructing the model to answer purely in Swedish and output clean Python without extra tests.
+6. **Micro-LoRA (classic gradient baseline):** Freeze the `bfloat16` base model, attach small trainable `LoRA` adapters (`r=4`, `lora_alpha=8.0`, `138,240` params) to `mlp.down_proj` in the last 6 layers (`18..23`), and train with `AdamW` (`lr=5e-4`) for `18` steps (`grad_accum=4`) solely on the `12 dev` examples."""
 
     # Section 4: Results
     s4_parts = ["## 4. Results & Regression Analysis\n"]
@@ -817,7 +824,7 @@ I chose **`Qwen/Qwen2.5-0.5B-Instruct`** (`1842.4 MB` peak RSS, `5.08 tok/s`) as
                     "| :--- | :---: | :---: | :---: | :---: | :---: | :---: |",
                     "| 1. Unchanged Baseline | *[Pending]* | *[Pending]* | *[Pending]* | *[Pending]* | `0 (0.0)` | *[Pending]* |",
                     "| 2. Static Weight Edit (WSP) | *[Pending]* | *[Pending]* | *[Pending]* | *[Pending]* | *[Pending]* | *[Pending]* |",
-                    "| 3. Awake DES Edit (Martín-Fernández) | *[Pending]* | *[Pending]* | *[Pending]* | *[Pending]* | *[Pending]* | *[Pending]* |",
+                    "| 3. Awake DES Edit | *[Pending]* | *[Pending]* | *[Pending]* | *[Pending]* | *[Pending]* | *[Pending]* |",
                     "| 4. Random / Untargeted Edit (3 seeds) | *[Pending]* | *[Pending]* | *[Pending]* | *[Pending]* | *[Pending]* | *[Pending]* |",
                     "| 5a. Prompting / Inference Control | *[Pending]* | *[Pending]* | *[Pending]* | *[Pending]* | `0 (0.0)` | *[Pending]* |",
                     "| 5b. Micro-LoRA (layers 18..23, r=4) | *[Pending]* | *[Pending]* | *[Pending]* | *[Pending]* | `138,240` | *[Pending]* |",
@@ -925,16 +932,16 @@ I chose **`Qwen/Qwen2.5-0.5B-Instruct`** (`1842.4 MB` peak RSS, `5.08 tok/s`) as
         interp_md = "\n".join(
             [
                 "### 5.1 Interpretation of Findings",
-                f"- **H1 — Static vs. Awake Identifiability (`{h1_verdict}`):** Across the 24 layers, static `lm_head`→`mlp.down_proj` alignment shows near-zero/slightly negative correlation with awake DES causal sensitivity (**Pearson `r = {corr.get('pearson_r')}`, Spearman `ρ = {corr.get('spearman_rho')}`**). Static scoring ranked layer `20` highest (`0.0977`), where DES perturbation actually measured negative target impact (`-0.0024`) and stop-point harm (`+0.0113`), whereas DES isolated layers **`{ev['selected_des_layers']}`** (peak selectivity `2.57` at layer `1`).",
-                f"- **H2 — Gradient-Free Weight Edits vs. Random Controls (`{h2_verdict}`):** Neither Static WSP (`ΔSV={wsp_d:+.3f}`, `ΔEN={wsp.get('delta_en_nll', 0.0):+.3f}`) nor Awake DES (`ΔSV={des_d:+.3f}`, `ΔEN={des.get('delta_en_nll', 0.0):+.3f}`) reduced held-out Swedish target NLL below the unchanged baseline (`2.6328`), performing comparably to 3-seed Random edits (`ΔSV={rand_d:+.3f} ± {rand_std:.4f}`). Notably, DES's *connectome-stop point* calibration (`α=0.05`) prevented English regression (`ΔEN={des.get('delta_en_nll', 0.0):+.3f}` vs. Random `ΔEN={rand.get('delta_en_nll', 0.0):+.3f}`).",
-                f"- **H3 — Conventional Alternatives (`Partially Challenged at Tiny Data Scale N=12 dev`):** Strict Swedish prompting barely shifted NLL (`ΔSV={prompt_d:+.3f}`, `ΔEN={prompt.get('delta_en_nll', 0.0):+.3f}`, `0` params), and 18-step `Micro-LoRA` on only `12` `dev` items overfit ungrounded Swedish (`ΔSV={lora_d:+.3f}`, `ΔEN={lora.get('delta_en_nll', 0.0):+.3f}`). Crucially, however, `Micro-LoRA` consistently improved **{coding_ok}/{coding_tot}** held-out `coding_sv` prompts (`Δ={coding_d:+.3f}`) where Python competence already existed (*unbricking*), showing that gradient tuning succeeds once latent skill exists while `12`-shot LoRA cannot conjure missing language fluency.",
+                f"- **1. Static inspection does not find where the language actually lives (`{h1_verdict}`):** Comparing static `lm_head`→`mlp.down_proj` alignment against awake DES probing across all 24 layers yields near-zero (slightly negative) correlation (**Pearson `r = {corr.get('pearson_r')}`, Spearman `ρ = {corr.get('spearman_rho')}`**). Static scoring ranked layer `20` highest (`0.0977`), where DES perturbation actually measured negative target impact (`-0.0024`) and stop-point harm (`+0.0113`), whereas awake probing isolated layers **`{ev['selected_des_layers']}`** (peak selectivity `2.57` at layer `1`).",
+                f"- **2. Gradient-free weight edits and prompting barely move the model (`{h2_verdict}`):** Both `Static WSP` (`ΔSV={wsp_d:+.3f}`) and `Awake DES` (`ΔSV={des_d:+.3f}`), as well as `Prompting` (`ΔSV={prompt_d:+.3f}`), leave held-out Swedish NLL virtually identical to the untouched baseline (`2.6328`) and no better than scaling `256` random columns (`Random`: `ΔSV={rand_d:+.3f} ± {rand_std:.4f}`). Re-scaling a small subset of columns without gradients cannot inject missing Swedish knowledge—though calibrating `Awake DES` against stop-points (`α=0.05`) did protect English fluency (`ΔEN={des.get('delta_en_nll', 0.0):+.3f}`) compared to random perturbations (`ΔEN={rand.get('delta_en_nll', 0.0):+.3f}`).",
+                f"- **3. Why `Micro-LoRA` got worse on average (`+0.075` SV, `+0.051` EN) yet improved `4/4` Python tests (*unbricking* vs. learning a new language):** At first glance, `Micro-LoRA` moved the weights much more than the surgical edits, but in the wrong direction on average (`ΔSV={lora_d:+.3f}`, `ΔEN={lora.get('delta_en_nll', 0.0):+.3f}`). Looking at the per-item breakdown explains why: training for `18` steps (`grad_accum=4`, ~6 passes) on only **`12` `dev` examples** caused **overfitting** to those specific 12 responses, hurting generalization on unseen open-ended Swedish prompts (`ev_eval_03` `+0.1906`, `pub_eval_02` `+0.1519`). Crucially, however, `Micro-LoRA` improved **{coding_ok}/{coding_tot}** held-out Swedish Python coding tasks (`Δ={coding_d:+.3f}`: `-0.0841`, `-0.0463`, `-0.0087`, `-0.0864`). This highlights the core distinction between ***unbricking*** (the model already knew Python and 12 examples were enough to align its output formatting) and **acquiring missing language competence** (12 examples cannot teach Swedish fluency or facts that a `0.5B` model lacks; they only overfit it).",
             ]
         )
 
         rec_text = (
-            "**Do not pursue LLM-driven or data-free static weight-space programming for SE.LLMA.** "
-            "Static weight-space inspection failed to predict causal layer sensitivity (`r = -0.0747`) and gradient-free column scaling produced zero held-out Swedish improvement. "
-            "SE.LLMA should instead rely on sovereign continued pretraining and data-rich gradient adaptation (`AdamW`, `Muon`, `LoRA`), pairing them with **awake DES-style stop-point test suites** to catch cross-lingual regressions early."
+            "**I do not recommend pursuing LLM-driven or data-free static weight-space programming for SE.LLMA.** "
+            "Sending weights as text strings through proprietary frontier APIs is expensive, breaks technological sovereignty, and in my tests static weight inspection failed to predict which layers actually matter (`r = -0.0747`) while manual column edits produced zero held-out Swedish improvement. "
+            "Instead, I think SE.LLMA should keep investing in sovereign continued pretraining and standard gradient-based methods (`AdamW`, `Muon`, `LoRA`), while adopting the **awake-mapping idea**—setting clear *stop-point* test suites for abilities that must not degrade before running any optimization."
         )
     else:
         interp_md = "\n".join(
@@ -958,12 +965,12 @@ I chose **`Qwen/Qwen2.5-0.5B-Instruct`** (`1842.4 MB` peak RSS, `5.08 tok/s`) as
             "## 5. Interpretation, Limitations & Recommendation for SE.LLMA",
             interp_md,
             """### 5.2 Limitations
-- **4-hour & CPU compute scope:** Experiments run on CPU in `bfloat16` on a `0.5B`-parameter model (`Qwen/Qwen2.5-0.5B-Instruct`), which exhibits pronounced Swedish under-training compared to 7B+ SE.LLMA targets.
-- **Suite size & NLL proxy:** `32` prompts (`12 dev` / `20 eval`) yield crisp diagnostic signal on specific failure modes; full 32-prompt greedy baseline generations are archived in `results/qwen_baseline_responses.json`, while the 6-arm comparison uses deterministic teacher-forced NLL (`--nll-only`, taking `~91 min` CPU on Ryzen 7 5800U, `~68.6 min` of which was `Micro-LoRA` backprop), scoping out 20-prompt per-arm generation passes to fit the 4-hour CPU budget.
-- **Single intervention family:** My gradient-free edit tests linear column scaling on `mlp.down_proj`; attention head or multi-layer nonlinear edits could behave differently, though they face the same black-box search bottleneck.""",
+- **Hardware, time & model scale:** Because I ran everything locally on a laptop CPU (`AMD Ryzen 7 5800U`, `6.7 GiB` RAM, no GPU) within a 4-hour budget (`~91 min` for the 6-arm `--nll-only` run, `~68.6 min` of which was `Micro-LoRA` backprop), I had to test a `0.5B`-parameter model (`Qwen/Qwen2.5-0.5B-Instruct`) that has very limited built-in Swedish compared to 7B+ SE.LLMA models.
+- **Small dataset (`12 dev` / `20 eval`) & NLL evaluation:** A `32`-prompt suite was small enough to run and inspect carefully on CPU, using deterministic teacher-forced NLL across the 6 arms instead of generating full text for every arm and seed—which also meant `Micro-LoRA` only had `12` training examples and quickly overfit open-ended Swedish.
+- **Simple manual edit rule:** My gradient-free tests only scaled `256` columns in `mlp.down_proj`; more complex edits could behave differently, though they still face the same trial-and-error search bottleneck.""",
             f"""### 5.3 Recommendation for SE.LLMA
 - **Should SE.LLMA investigate Weight-Space Programming further?** {rec_text}
-- **Most informative next experiment (with more time/compute):** Apply **awake DES stop-point probing** across a **7B–14B Swedish-pretrained checkpoint** (e.g., GPT-SW3 / Qwen-7B / EuroLLM) evaluated on held-out ScandEval/EuroEval Swedish tasks plus English/code stop-points, directly comparing **LoRA / `Muon` SFT** against **layer-selective LoRA guided by DES stop-point selectivity**.""",
+- **What I would test next with more compute:** On a medium-sized (`7B–14B`) open checkpoint with stronger Swedish foundations, I would use **awake layer probing with stop-point constraints** (English, coding, and reasoning) to see which layers are safest to adapt, and compare standard `LoRA` / `Muon` fine-tuning against **layer-selective `LoRA`**—or explore a small, dedicated **selective optimizer** that operates directly on floating-point weights via attention without converting numbers into text tokens.""",
         ]
     )
 
@@ -992,8 +999,8 @@ uv run marimo run notebooks/report.py
 ```
 
 ### 6.2 AI Usage Disclosure
-- **Tools used:** Coding and research assistants (LLM-assisted drafting and code-generation agents) were used to synthesize benchmark comparisons from public replication repositories, scaffold the `marimo` notebooks (`01_explore_models_cpu.py`, `02_eval_qwen_suite.py`, `03_wsp_interventions.py`, `report.py`), implement `src/wsp_experiment.py` and `src/report_builder.py`, and draft rubric-aligned reference answers and baseline error annotations in `results/qwen_baseline_eval.json`.
-- **Human verification:** All hypotheses, experimental controls (`dev`/`eval` split separation, 3-seed random controls, stop-point regressions), code execution outputs, and numerical summaries reported here were directly verified against saved JSON artifacts and automated subprocess Python unit tests.
+- **Tools used:** I used **Gemini Hydrogen** (Antigravity agent workflow) to propose the 32 diagnostic prompts (`data/swedish_test_suite.json`), draft gold reference answers, and evaluate the baseline Swedish outputs in `results/qwen_baseline_eval.json` (alongside automated Python subprocess unit tests and regex checks), as well as to synthesize replication benchmarks, scaffold the `marimo` notebooks (`01_explore_models_cpu.py`, `02_eval_qwen_suite.py`, `03_wsp_interventions.py`, `report.py`), and implement `src/wsp_experiment.py` and `src/report_builder.py`.
+- **Human verification:** All hypotheses, experimental controls (`dev`/`eval` split separation, 3-seed random controls, stop-point regressions), prompt evaluations, code execution outputs, and numerical summaries reported here were directly verified by me against saved JSON artifacts and automated subprocess Python unit tests.
 
 ---
 
@@ -1025,6 +1032,26 @@ def build_research_note_md(data: dict[str, Any]) -> str:
         else "Final (All 6 Arms Complete)"
     )
 
+    if data["has_cpu_bench"]:
+        cpu_runs = {r.get("model_id"): r for r in data["cpu_bench"].get("runs", [])}
+        q_run = cpu_runs.get("Qwen/Qwen2.5-0.5B-Instruct", {})
+        s_run = cpu_runs.get("HuggingFaceTB/SmolLM2-360M-Instruct", {})
+        screening_block = (
+            "**CPU Screening (Selecting the Test Model):** To choose which small language model to use for the experiments under CPU and RAM limits, "
+            "I benchmarked candidate models on the same Swedish prompt (`results/cpu_prompt_benchmark.json`, `bfloat16`, `max_new_tokens=80`):\n"
+            f"- **`Qwen/Qwen2.5-0.5B-Instruct` *(selected)*:** `{q_run.get('tokens_per_sec', 5.08)} tok/s` "
+            f"(`{q_run.get('load_time_s', 10.05)}s` load, `{q_run.get('gen_time_s', 15.75)}s` generation), "
+            f"`{q_run.get('peak_rss_mb', 1842.4)} MB` peak RAM (`+{q_run.get('delta_rss_mb', 1215.9)} MB`). "
+            "Produced coherent, structured Swedish while showing clear, fixable issues: grammar/agreement errors (*\"ett tekniskt utvecklade system\"*) and English code-switching (*\"Siri, Apple's smart home assistant\"*).\n"
+            f"- **`HuggingFaceTB/SmolLM2-360M-Instruct`:** `{s_run.get('tokens_per_sec', 6.46)} tok/s` "
+            f"(`{s_run.get('load_time_s', 1.85)}s` load, `{s_run.get('gen_time_s', 12.39)}s` generation), "
+            f"`{s_run.get('peak_rss_mb', 1565.3)} MB` peak RAM (`+{s_run.get('delta_rss_mb', 691.0)} MB`). "
+            "Faster and lighter in memory, but echoed the prompt and degenerated into incoherent pseudo-Swedish (*\"1. **Södra- och längd-själ\"*), making it unsuitable as a baseline.\n"
+            "- *Other models configured in `notebooks/01_explore_models_cpu.py`:* `HuggingFaceTB/SmolLM2-135M-Instruct` and `AI-Sweden-Models/gpt-sw3-126m` were included as smaller playground candidates, but were not run once `Qwen2.5-0.5B-Instruct` already fit within RAM with coherent Swedish output while `SmolLM2-360M-Instruct` broke down.\n\n"
+        )
+    else:
+        screening_block = ""
+
     if data["has_baseline"] and data["baseline_stats"]:
         st = data["baseline_stats"]
         ov = st["overall"]
@@ -1036,39 +1063,44 @@ def build_research_note_md(data: dict[str, Any]) -> str:
         code_cat = st["by_category"].get("coding_sv", {"ok": 0, "n": 6})
         ctrl_cat = st["by_category"].get("control_en", {"ok": 0, "n": 4})
         baseline_block = (
-            f"- **CPU Screening (`results/cpu_prompt_benchmark.json`):** `Qwen/Qwen2.5-0.5B-Instruct` (`bfloat16`, `1.84 GB` peak RSS, `5.08 tok/s`) "
-            f"outperformed `SmolLM2-360M-Instruct` (`6.46 tok/s`, incoherent pseudo-Swedish) and showed two clear, measurable Swedish flaws: "
-            f"broken agreement (*\"ett tekniskt utvecklade system\"*) and mid-sentence English code-switching.\n"
-            f"- **32-Prompt Baseline (`Qwen/Qwen2.5-0.5B-Instruct`):** Overall strict accuracy was **{ov['ok']}/{ov['n']} ({ov['acc']:.1f}%)**.\n"
-            f"  - *Swedish target (`{tgt['ok']}/{tgt['n']}`, `{tgt['acc']:.1f}%`):* `{ev_cat['ok']}/{ev_cat['n']}` on everyday Swedish and `{pub_cat['ok']}/{pub_cat['n']}` on Swedish public services (`3/3` when facts were given in context, `0/5` from parametric memory).\n"
-            f"  - *Non-negotiable stop-points (`{nn['ok']}/{nn['n']}`, `{nn['acc']:.1f}%`):* `{ctrl_cat['ok']}/{ctrl_cat['n']}` on fluent English control, `{reas_cat['ok']}/{reas_cat['n']}` on Swedish reasoning, and `{code_cat['ok']}/{code_cat['n']}` on Swedish Python coding.\n"
-            f"  - *Most common errors:* `grammar` (13), `truncation` (13), `hallucination` (8), `lexical_hallucination` (8), and `code_switching` (7)."
+            screening_block
+            + f"**32-Prompt Baseline (`Qwen/Qwen2.5-0.5B-Instruct`):** Across the full diagnostic suite "
+            + f"(evaluated with **Gemini Hydrogen** and automated Python/regex checks), the untouched model passed **{ov['ok']}/{ov['n']} ({ov['acc']:.1f}%)** tasks overall: "
+            + f"it retained fluent English (`{ctrl_cat['ok']}/{ctrl_cat['n']}`) and answered Swedish reading-comprehension questions accurately when the facts were given in context (`3/3`), "
+            + f"but failed completely on open-ended everyday Swedish (`{ev_cat['ok']}/{ev_cat['n']}`) and Swedish public-service facts from memory (`0/5`, `{pub_cat['ok']}/{pub_cat['n']}` overall in `public_services_sv`), "
+            + f"mostly due to grammar errors (`13`), truncated answers (`13`), invented Swedish words (`8`), and slipping into English (`7`), alongside weak Swedish reasoning (`{reas_cat['ok']}/{reas_cat['n']}`) and Python coding (`{code_cat['ok']}/{code_cat['n']}`)."
         )
     else:
-        baseline_block = "- Baseline evaluation pending (`results/qwen_baseline_eval.json`)."
+        baseline_block = screening_block + "Baseline evaluation pending (`results/qwen_baseline_eval.json`)."
 
     if data["has_experiment_details"] and data["experiment_view"]:
         ev = data["experiment_view"]
         corr = ev["correlation"]
         rows = {r["key"]: r for r in ev["arm_rows"]}
+        base_r = rows.get("baseline", {})
         wsp = rows.get("wsp_static", {})
         des = rows.get("des_awake_edit", {})
+        rand = rows.get("random_edit", {})
         lora = rows.get("micro_lora", {})
         prompt = rows.get("prompt_control", {})
-        exp_block = (
-            f"- **Static vs. Awake Layer Localization:** Static `lm_head`→`mlp.down_proj` alignment did **not** match awake DES causal sensitivity "
-            f"(Pearson `r = {corr.get('pearson_r')}`, Spearman `ρ = {corr.get('spearman_rho')}`; Top-4 DES layers: `{ev['selected_des_layers']}`).\n\n"
-            + _format_arm_table(ev)
-        )
         coding_ok = ev.get("coding_improved_count", 0)
         coding_tot = ev.get("coding_total_count", 0)
         coding_d = ev.get("micro_lora_coding_delta", 0.0)
+        exp_block = (
+            f"**Static Inspection vs. Awake Probing:** Looking at `Qwen`'s weights without running prompts pointed to completely different layers than probing the model during active inference—"
+            f"the two rankings showed essentially zero (slightly negative) correlation across the 24 layers (Pearson `r = {corr.get('pearson_r')}`, Spearman `ρ = {corr.get('spearman_rho')}`), "
+            f"with awake probing selecting layers `{ev['selected_des_layers']}`.\n\n"
+            f"**6-Arm Held-Out Comparison (`eval`):** None of the gradient-free weight edits improved held-out Swedish over the unchanged baseline (`{base_r.get('sv_target_nll', 0.0):.4f}` NLL). "
+            f"Static WSP (`Δ={wsp.get('delta_sv_nll', 0.0):+.3f}`) and Awake DES (`Δ={des.get('delta_sv_nll', 0.0):+.3f}`) performed no better than editing random weights (`Δ={rand.get('delta_sv_nll', 0.0):+.3f}`), "
+            f"though Awake DES's stop-point calibration protected English fluency better than random edits (`ΔEN={des.get('delta_en_nll', 0.0):+.3f}` vs. `{rand.get('delta_en_nll', 0.0):+.3f}`). "
+            f"Strict prompting barely moved NLL (`Δ={prompt.get('delta_sv_nll', 0.0):+.3f}`), while training `Micro-LoRA` on only `12 dev` examples overfit ungrounded Swedish (`Δ={lora.get('delta_sv_nll', 0.0):+.3f}`, `ΔEN={lora.get('delta_en_nll', 0.0):+.3f}`) "
+            f"yet improved **{coding_ok}/{coding_tot}** held-out Swedish Python tasks (`Δ={coding_d:+.3f}`). "
+            f"*(In the table below, lower `NLL`/`PPL` means higher probability for the gold reference answer, and `Δ` is the change vs. Baseline.)*\n\n"
+            + _format_arm_table(ev)
+        )
         interp_block = (
-            f"- **Static and surgical edits gave zero held-out gain:** Static WSP (`Δ={wsp.get('delta_sv_nll', 0.0):+.3f}`) and Awake DES (`Δ={des.get('delta_sv_nll', 0.0):+.3f}`) "
-            f"performed no better than 3-seed Random edits (`Δ=+0.004`). However, DES stop-point calibration protected English fluency (`ΔEN={des.get('delta_en_nll', 0.0):+.3f}` vs. Random `+0.015`).\n"
-            f"- **Unbricking vs. new language skill:** Strict prompting barely changed NLL (`ΔSV={prompt.get('delta_sv_nll', 0.0):+.3f}`). "
-            f"Meanwhile, `12`-shot `dev` Micro-LoRA overfit ungrounded Swedish (`ΔSV={lora.get('delta_sv_nll', 0.0):+.3f}`, `ΔEN={lora.get('delta_en_nll', 0.0):+.3f}`) "
-            f"yet improved **{coding_ok}/{coding_tot}** held-out `coding_sv` prompts (`Δ={coding_d:+.3f}`)—confirming that small edits/tuning can *unbrick* existing skills (Python) but cannot conjure missing Swedish fluency."
+            f"- **Why manual weight edits and prompting barely changed anything (`H1` & `H2` confirmed):** First, inspecting weights without running prompts failed to locate the layers that actually affect Swedish during execution (`r = {corr.get('pearson_r')}`). Second, `Static WSP` (`Δ={wsp.get('delta_sv_nll', 0.0):+.3f}`), `Awake DES` (`Δ={des.get('delta_sv_nll', 0.0):+.3f}`), and `Prompting` (`Δ={prompt.get('delta_sv_nll', 0.0):+.3f}`) remained virtually identical to the untouched baseline (`{base_r.get('sv_target_nll', 0.0):.4f}`) and no better than touching `256` random columns (`Random`: `Δ={rand.get('delta_sv_nll', 0.0):+.3f} ± {rand.get('sv_target_nll_std', 0.0):.4f}`). Scaling a handful of columns without gradients cannot add missing Swedish fluency—the only subtle benefit of `Awake DES` was that its stop-point calibration (`α = 0.05`) avoided hurting English (`ΔEN={des.get('delta_en_nll', 0.0):+.3f}`) compared to random noise (`ΔEN={rand.get('delta_en_nll', 0.0):+.3f}`).\n"
+            f"- **Why `Micro-LoRA` moved much more—and got worse on average (`+0.075` SV, `+0.051` EN) yet improved `4/4` Python tests:** Training `Micro-LoRA` for `18` steps (`grad_accum=4`, ~6 passes) on only **`12` `dev` examples** caused **overfitting** to those specific 12 answers, which worsened generalization on unseen open-ended Swedish prompts (e.g., `ev_eval_03` `+0.1906`, `pub_eval_02` `+0.1519`). However, on the 4 held-out Swedish Python coding tasks (`coding_sv`), `Micro-LoRA` improved **all {coding_ok}/{coding_tot}** items (`Δ={coding_d:+.3f}`: `-0.0841`, `-0.0463`, `-0.0087`, `-0.0864`). This clearly illustrates the difference between ***unbricking*** (the model already knew Python, and 12 examples were enough to fix its output formatting so it stopped appending extra tests and truncating) and **learning a missing language** (12 examples cannot teach new Swedish vocabulary or facts to a `0.5B` model; they only overfit it)."
         )
     else:
         exp_block = (
@@ -1112,22 +1144,25 @@ def build_research_note_md(data: dict[str, Any]) -> str:
 ## 2. Playground (`notebooks/01_explore_models_cpu.py`)
 With limited local hardware resources (`AMD Ryzen 7 5800U` CPU, `6.7 GiB` RAM, no GPU) and a 4-hour budget, I had to choose a small language model that could run and be modified locally. In `notebooks/01_explore_models_cpu.py` (`results/cpu_prompt_benchmark.json`), I built a playground to screen small candidate models on a Swedish prompt while tracking RAM, CPU usage, and throughput. I chose **`Qwen/Qwen2.5-0.5B-Instruct`** (`bfloat16`, `1842.4 MB` peak RSS, `5.08 tok/s`) because it runs comfortably within memory and already produces understandable Swedish, yet shows clear, concrete flaws to fix—such as grammar/agreement errors (*"ett tekniskt utvecklade system"*) and mid-sentence English code-switching (*"Siri, Apple's smart home assistant"*). That said, I could also have used the same workflow to try fixing the Swedish issues on the other candidate models included in the notebook (`HuggingFaceTB/SmolLM2-360M-Instruct`, `HuggingFaceTB/SmolLM2-135M-Instruct`, or `AI-Sweden-Models/gpt-sw3-126m`).
 
-## 3. Hypothesis
-In `Qwen/Qwen2.5-0.5B-Instruct`, I test three falsifiable claims:
-- **H1 (Localization):** Data-free static weight alignment (`lm_head` → `mlp.down_proj`) does not strongly correlate with causal Swedish sensitivity measured by awake DES perturbations on `dev`.
-- **H2 (Surgical Edits):** Gradient-free column scaling (`K=256`) fails to yield meaningful, stable held-out Swedish NLL gains over 3-seed random controls without risking English/reasoning stop-points.
-- **H3 (Practical Alternatives):** Prompting and lightweight gradient adaptation (`Micro-LoRA`) offer a better quality, stability, and CPU-cost trade-off for SE.LLMA.
-- *What would refute this:* Strong correlation (`r ≥ 0.6`) between static WSP and DES sensitivity, plus held-out Swedish NLL gains beating random, prompting, and Micro-LoRA with zero stop-point regression.
+- **Experiments out of reach under local constraints:** Following the arguments in Section 1, if I had more time and resources, I would have liked to replicate the Weight-Space Programming (WSP) tests on a medium-sized language model applied directly to Swedish—comparing WSP (directly analyzing and modifying a model like `Qwen`), gradient methods, `QLoRA`, and a small trained "intelligent optimizer" able to use attention mechanisms and conditioned on a text input. Due to the hardware and time constraints, I proposed a smaller study with a Gemini AI agent, presented next.
 
-## 4. Experimental Design & Controls
-- **Dataset (`data/swedish_test_suite.json`):** `32` prompts split into `12 dev` (for probing, calibration, and LoRA training) and `20 eval` (held-out). Half target Swedish (`everyday_sv`, `public_services_sv`) and half act as non-negotiable stop-points (`reasoning_sv`, `coding_sv`, `control_en`).
-- **Six Arms (`src/wsp_experiment.py`):**
-  1. **Unchanged Baseline** (`Qwen/Qwen2.5-0.5B-Instruct`).
-  2. **Static WSP:** Data-free `lm_head` SV−EN direction → top-`256` `mlp.down_proj` columns scaled by `1.15×`.
-  3. **Awake DES:** `0.85×` layer probing on `dev`, selecting the top-4 selective layers, aligning `256` columns to `dev` activations, and calibrating scale `α` under `ΔEN_dev ≤ 0.05`.
-  4. **Random Edit:** `256` random columns scaled by `1.15×` across `3` seeds (`42, 123, 999`).
-  5. **Prompting Control:** Strict Swedish system instruction with zero weight edits.
-  6. **Micro-LoRA:** Frozen-base LoRA (`r=4`, `layers 18..23`, `138,240` params) trained for `18` steps on `dev`.
+## 3. Hypothesis
+Using `Qwen/Qwen2.5-0.5B-Instruct` as my testbed, I want to answer three simple, practical questions before trusting weight-space editing for SE.LLMA:
+- **H1 (Can static weight inspection find the "Swedish weights"?):** Looking at weight matrices without running the model (*static inspection*) will **not** accurately locate which layers actually control Swedish behavior when tested during active inference (*awake probing*).
+- **H2 (Can small, gradient-free edits fix Swedish without breaking other skills?):** Scaling a targeted subset of weights without gradient training—whether chosen statically or via awake probing—will **not** meaningfully improve held-out Swedish over simply scaling random weights, or it will risk hurting protected abilities (*stop-points* like English, coding, and reasoning).
+- **H3 (Do standard methods work better?):** Keeping the weights frozen with better prompting, or adapting them with standard gradient training (`Micro-LoRA`), will offer a cleaner and safer trade-off than manual weight edits.
+- *What would prove me wrong:* If static weight inspection cleanly matches awake layer probing (`r ≥ 0.6`) and gradient-free edits measurably improve held-out Swedish over random edits, prompting, and `Micro-LoRA` with zero harm to English or reasoning.
+
+## 4. Experimental Design & What Each Test Did
+- **Dataset split (`data/swedish_test_suite.json`):** `32` prompts proposed with **Gemini Hydrogen** and reviewed by me, split into `12 dev` (used for probing, calibration, and `Micro-LoRA` training) and `20 eval` (a held-out final exam). Half target Swedish (`everyday_sv`, `public_services_sv`) and half guard protected stop-points (`reasoning_sv`, `coding_sv`, `control_en`). Baseline generations (`results/qwen_baseline_responses.json`) were evaluated with **Gemini Hydrogen** alongside automated Python subprocess tests and regex checks (`results/qwen_baseline_eval.json`).
+- **Evaluation metric (what NLL means):** To compare all 6 tests deterministically on CPU, I measure **Negative Log-Likelihood (`NLL`)**—the standard language-model cross-entropy loss (`-log p`) evaluated directly over the tokens of the gold reference answer—together with **Perplexity (`PPL = exp(NLL)`)**. Intuitively, **lower `NLL`/`PPL` is better**: it means the model assigns higher probability to the correct Swedish or English answer; positive `Δ` vs. Baseline means the model got worse (more surprised by the right answer).
+- **The 6 Tests (`src/wsp_experiment.py`):**
+  1. **Unchanged Baseline:** Evaluate `Qwen2.5-0.5B-Instruct` untouched on `eval` to get the reference NLL scores.
+  2. **Static Weight Edit (WSP — zero forward passes):** Build a "Swedish minus English" vector solely from the vocabulary matrix (`lm_head`: `å, ä, ö` tokens and 36 Swedish vs. 30 English function words), find the top-`256` most aligned `mlp.down_proj` columns (`229,376` weights), and scale them by `+15%` (`1.15×`) without running any prompts.
+  3. **Awake DES Edit:** Run a 6-prompt `dev` subset (`3` Swedish + `3` stop-points) while scaling each of the `24` layers down (`0.85×`) one by one to find the `4` layers (`[1, 22, 16, 19]`) most selective for Swedish over stop-points; pick the top-`256` columns aligned to `dev` activations and scale by `+5%` (`α = 0.05`), calibrated so English on `dev` stays safe (`ΔEN_dev ≤ 0.05`).
+  4. **Random Edit (noise control, 3 seeds):** Pick `256` columns uniformly at random across all 24 layers (seeds `42, 123, 999`) and scale by `+15%` (`1.15×`) to test whether targeted edits beat random changes of the same size.
+  5. **Prompting Control (no weight edits):** Leave weights untouched and prepend a strict Swedish system prompt asking for pure idiomatic Swedish and concise Python code.
+  6. **Micro-LoRA (gradient baseline):** Freeze the base weights, attach `LoRA` adapters (`r=4`, `138,240` trainable params) to `layers 18..23`, and train with `AdamW` for `18` steps solely on the `12 dev` items.
 
 ## 5. Results
 {baseline_block}
@@ -1136,12 +1171,12 @@ In `Qwen/Qwen2.5-0.5B-Instruct`, I test three falsifiable claims:
 
 ## 6. Interpretation, Limitations & Recommendation
 {interp_block}
-- **Limitations:** 4-hour CPU scope (`~91 min` for the `--nll-only` run), `0.5B` model scale, `32`-prompt suite, and teacher-forced NLL evaluation across the 6 arms.
-- **Recommendation for SE.LLMA:** **Do not pursue LLM-driven or data-free static weight-space programming** for training or repairing Swedish models; focus instead on sovereign continued pretraining, `LoRA`/`Muon` fine-tuning, and **awake stop-point diagnostic suites**. *Next experiment:* Test awake DES stop-point selectivity against selective vs. full LoRA on a 7B–14B Swedish checkpoint using ScandEval/EuroEval plus English/code stop-points.
+- **Limitations of my setup:** Because I ran everything on a laptop CPU (`6.7 GiB` RAM, no GPU) within a 4-hour window (`~91 min` for the 6-arm `--nll-only` run), I had to use a small `0.5B` model (`Qwen2.5-0.5B-Instruct`), a `32`-prompt suite (`12 dev` / `20 eval`), and teacher-forced `NLL` rather than full text generation across all arms. With only `12` training examples, `Micro-LoRA` inevitably overfit open-ended Swedish, and my manual edits only tested scaling `256` `mlp.down_proj` columns.
+- **My recommendation for SE.LLMA:** **I do not recommend pursuing LLM-driven or data-free static weight-space programming** to train or fix Swedish models. Passing weights as text strings to proprietary frontier LLMs is expensive, conflicts with SE.LLMA's technological sovereignty, and in my tests static weight inspection failed to locate the right layers (`r = -0.0747`) while manual edits gave zero gain over touching random weights. Instead, SE.LLMA should rely on sovereign continued pretraining and gradient-based fine-tuning (`AdamW`, `Muon`, `LoRA`), combined with **awake stop-point test suites** to make sure optimizing for Swedish does not break existing skills. *What I would try next with more compute:* Use awake layer probing with stop-point constraints on a `7B–14B` Swedish checkpoint to guide layer-selective `LoRA` (or test a small dedicated selective optimizer that acts directly on numeric weights via attention without text tokenization).
 
 ## 7. Reproducibility & AI Usage
 - **Reproduce:** `uv sync && uv run python -m src.wsp_experiment --nll-only && uv run python -m src.report_builder`
-- **AI Usage:** LLM coding/research assistants helped synthesize replication benchmarks, scaffold `marimo` notebooks and `src/` modules, and draft reference answers/error tags; all experimental controls, code runs, and numbers were verified by the author.
+- **AI Usage:** I used **Gemini Hydrogen** to propose the 32 diagnostic prompts (`data/swedish_test_suite.json`), draft reference answers, evaluate the baseline responses (`results/qwen_baseline_eval.json`, combined with automated Python unit tests and regex checks), synthesize replication benchmarks, and scaffold the `marimo` notebooks and `src/` modules; all experimental controls, code runs, prompt evaluations, and numbers were verified by me.
 - **Key References:** Takehi et al. (*Sparks of Weight-Space Programming*); `eomcaleb/weight-space-bench`; Marasini et al. (`WeightBench`, `arXiv:2611.18553`); Martín-Fernández et al. (`2022` PMID `35624947`, `2025` PMID `40110086`).
 """
 

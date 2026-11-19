@@ -79,8 +79,8 @@ uv sync
 
 ## AI Usage
 
-- **Tools & Contributions:** Coding and research AI assistants (Antigravity agent workflows with Gemini models) were used to:
-  1. Synthesize replication benchmarks and verify external literature references (`WeightBench`, `eomcaleb/weight-space-bench`, `MatinKhajavi/Weight-Space-Programming`, Muon, and Dr. Jesús Martín-Fernández's awake brain mapping publications).
-  2. Scaffold the four `marimo` notebooks (`01_explore_models_cpu.py`, `02_eval_qwen_suite.py`, `03_wsp_interventions.py`, `report.py`) and implement `src/wsp_experiment.py` and `src/report_builder.py`.
-  3. Draft the 32-prompt Swedish/English evaluation suite (`data/swedish_test_suite.json`), rubric annotations, and reference answers in `results/qwen_baseline_eval.json`.
-- **Verification:** All hypotheses, control arms, model outputs, automated Python unit-test subprocess checks, and reported numbers were executed locally on CPU and directly verified against saved JSON artifacts and rendered PDF pages.
+- **Tools & Contributions:** **Gemini Hydrogen** (via Antigravity agent workflows) was used to:
+  1. Propose the 32-prompt Swedish/English evaluation suite (`data/swedish_test_suite.json`), draft rubric-aligned reference answers, and evaluate the baseline responses in `results/qwen_baseline_eval.json` alongside automated Python subprocess tests and regex checks.
+  2. Synthesize replication benchmarks and verify external literature references (`WeightBench`, `eomcaleb/weight-space-bench`, `MatinKhajavi/Weight-Space-Programming`, Muon, and Dr. Jesús Martín-Fernández's awake brain mapping publications).
+  3. Scaffold the four `marimo` notebooks (`01_explore_models_cpu.py`, `02_eval_qwen_suite.py`, `03_wsp_interventions.py`, `report.py`) and implement `src/wsp_experiment.py` and `src/report_builder.py`.
+- **Verification:** All hypotheses, prompt evaluations, control arms, model outputs, automated Python unit-test subprocess checks, and reported numbers were executed locally on CPU and directly verified against saved JSON artifacts and rendered PDF pages.
